@@ -1,0 +1,1674 @@
+--[[
+    RMS (Roblox Map System) – Script mejorado v6
+    - Corregido movimiento de bloques invisibles con luz usando CommitMove
+    - Reintentos mejorados y validación de datos
+    - Tiempos por defecto más tolerantes
+]]
+
+local Services = {
+    Http = game:GetService("HttpService"),
+    Players = game:GetService("Players"),
+    UserInput = game:GetService("UserInputService"),
+    RS = game:GetService("ReplicatedStorage"),
+    RunService = game:GetService("RunService"),
+    CoreGui = game:GetService("CoreGui")
+}
+
+local lp = Services.Players.LocalPlayer
+local folderPath = "PiggyMaps/"
+
+if makefolder then pcall(function() makefolder("PiggyMaps") end) end
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  TRADUCCIONES E IDIOMA
+-- ═══════════════════════════════════════════════════════════════════════════
+local LANG = {
+    English = {
+        ["AUTOBUILD"] = "AUTOBUILD",
+        ["SELECT MAP"] = "SELECT MAP",
+        ["PREVIEW LOCAL"] = "PREVIEW LOCAL",
+        ["UPLOAD SERVER"] = "UPLOAD SERVER",
+        ["CLEAR"] = "CLEAR",
+        ["MOVE"] = "MOVE",
+        ["ROTATE"] = "ROTATE",
+        ["Status: Idle"] = "Status: Idle",
+        ["Move Snap"] = "Move Snap",
+        ["Angle Snap (deg)"] = "Angle Snap (deg)",
+        ["SETTINGS"] = "SETTINGS",
+        ["FILE MANAGER"] = "FILE MANAGER",
+        ["SAVE MAP"] = "SAVE MAP",
+        ["CANCEL"] = "CANCEL",
+        ["FORMAT: NEW VERSION"] = "FORMAT: NEW VERSION",
+        ["FORMAT: OLD VERSION"] = "FORMAT: OLD VERSION",
+        ["ZONE EDITOR"] = "ZONE EDITOR",
+        ["SPAWN ZONE"] = "SPAWN ZONE",
+        ["TP ZONE TO ME"] = "TP ZONE TO ME",
+        ["RESIZE BOX"] = "RESIZE BOX",
+        ["SAVE AREA"] = "SAVE AREA",
+        ["CLEAR BOX"] = "CLEAR BOX",
+        ["Disable invisible blocks"] = "Disable invisible blocks",
+        ["Use LoadedMap"] = "Use LoadedMap",
+        ["Auto-clear preview"] = "Auto-clear preview",
+        ["Show warnings"] = "Show warnings",
+        ["Preview transparency"] = "Preview transparency",
+        ["Search timeout (s)"] = "Search timeout (s)",
+        ["Build speed (s)"] = "Build speed (s)",
+        ["Language"] = "Language",
+        ["CLOSE"] = "CLOSE",
+        ["Reset settings"] = "Reset settings",
+        ["CREDITS AND LINKS"] = "CREDITS AND LINKS",
+        ["Discord server link https://discord.gg/JFSj6zwTc"] = "Discord server link https://discord.gg/JFSj6zwTc",
+        ["Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF"] = "Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF",
+        ["Inspired by:\nModel manager by darki\nSteal maps from venoHub"] = "Inspired by:\nModel manager by darki\nSteal maps from venoHub",
+        ["ON"] = "ON",
+        ["OFF"] = "OFF",
+        ["hide"] = "hide",
+        ["show"] = "show",
+        ["Spawn zone first!"] = "Spawn zone first!",
+        ["Resize Active"] = "Resize Active",
+        ["Preview Loaded"] = "Preview Loaded",
+        ["File not found"] = "File not found",
+        ["Error: No preview active"] = "Error: No preview active",
+        ["Error: Remotes not found"] = "Error: Remotes not found",
+        ["No data to upload"] = "No data to upload",
+        ["Upload Cancelled by user"] = "Upload Cancelled by user",
+        ["Upload Finished"] = "Upload Finished",
+        ["Saved: "] = "Saved: ",
+        ["parts (size: "] = "parts (size: ",
+        ["KB)"] = "KB)",
+        ["Error saving file. Try again."] = "Error saving file. Try again.",
+        ["Blocks: "] = "Blocks: ",
+        [" (fails: "] = " (fails: ",
+        ["Settings reset"] = "Settings reset",
+    },
+    Spanish = {
+        ["AUTOBUILD"] = "AUTOCONSTRUIR",
+        ["SELECT MAP"] = "SELECCIONAR MAPA",
+        ["PREVIEW LOCAL"] = "VISTA PREVIA LOCAL",
+        ["UPLOAD SERVER"] = "SUBIR AL SERVIDOR",
+        ["CLEAR"] = "LIMPIAR",
+        ["MOVE"] = "MOVER",
+        ["ROTATE"] = "ROTAR",
+        ["Status: Idle"] = "Estado: Inactivo",
+        ["Move Snap"] = "Ajuste de movimiento",
+        ["Angle Snap (deg)"] = "Ajuste de ángulo (grados)",
+        ["SETTINGS"] = "AJUSTES",
+        ["FILE MANAGER"] = "ADMINISTRADOR DE ARCHIVOS",
+        ["SAVE MAP"] = "GUARDAR MAPA",
+        ["CANCEL"] = "CANCELAR",
+        ["FORMAT: NEW VERSION"] = "FORMATO: NUEVA VERSIÓN",
+        ["FORMAT: OLD VERSION"] = "FORMATO: VIEJA VERSIÓN",
+        ["ZONE EDITOR"] = "EDITOR DE ZONA",
+        ["SPAWN ZONE"] = "ZONA DE APARICIÓN",
+        ["TP ZONE TO ME"] = "TELEPORTAR ZONA A MÍ",
+        ["RESIZE BOX"] = "REDIMENSIONAR CAJA",
+        ["SAVE AREA"] = "GUARDAR ÁREA",
+        ["CLEAR BOX"] = "LIMPIAR CAJA",
+        ["Disable invisible blocks"] = "Desactivar bloques invisibles",
+        ["Use LoadedMap"] = "Usar LoadedMap",
+        ["Auto-clear preview"] = "Limpiar vista previa automáticamente",
+        ["Show warnings"] = "Mostrar advertencias",
+        ["Preview transparency"] = "Transparencia de vista previa",
+        ["Search timeout (s)"] = "Tiempo de búsqueda (s)",
+        ["Build speed (s)"] = "Velocidad de construcción (s)",
+        ["Language"] = "Idioma",
+        ["CLOSE"] = "CERRAR",
+        ["Reset settings"] = "Restablecer ajustes",
+        ["CREDITS AND LINKS"] = "CRÉDITOS Y ENLACES",
+        ["Discord server link https://discord.gg/JFSj6zwTc"] = "Enlace del servidor Discord https://discord.gg/JFSj6zwTc",
+        ["Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF"] = "Enlace del tutorial https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF",
+        ["Inspired by:\nModel manager by darki\nSteal maps from venoHub"] = "Inspirado en:\nModel manager por darki\nRobar mapas de venoHub",
+        ["ON"] = "ACTIVADO",
+        ["OFF"] = "DESACTIVADO",
+        ["hide"] = "ocultar",
+        ["show"] = "mostrar",
+        ["Spawn zone first!"] = "¡Primero crea la zona!",
+        ["Resize Active"] = "Redimensionando",
+        ["Preview Loaded"] = "Vista previa cargada",
+        ["File not found"] = "Archivo no encontrado",
+        ["Error: No preview active"] = "Error: No hay vista previa activa",
+        ["Error: Remotes not found"] = "Error: No se encontraron los remotes",
+        ["No data to upload"] = "No hay datos para subir",
+        ["Upload Cancelled by user"] = "Subida cancelada por el usuario",
+        ["Upload Finished"] = "Subida finalizada",
+        ["Saved: "] = "Guardado: ",
+        ["parts (size: "] = "partes (tamaño: ",
+        ["KB)"] = "KB)",
+        ["Error saving file. Try again."] = "Error al guardar. Intenta de nuevo.",
+        ["Blocks: "] = "Bloques: ",
+        [" (fails: "] = " (fallos: ",
+        ["Settings reset"] = "Ajustes restablecidos",
+    },
+    Portuguese = {
+        ["AUTOBUILD"] = "AUTOCONSTRUIR",
+        ["SELECT MAP"] = "SELECIONAR MAPA",
+        ["PREVIEW LOCAL"] = "PRÉ-VISUALIZAÇÃO LOCAL",
+        ["UPLOAD SERVER"] = "ENVIAR PARA SERVIDOR",
+        ["CLEAR"] = "LIMPAR",
+        ["MOVE"] = "MOVER",
+        ["ROTATE"] = "GIRAR",
+        ["Status: Idle"] = "Status: Inativo",
+        ["Move Snap"] = "Ajuste de movimento",
+        ["Angle Snap (deg)"] = "Ajuste de ângulo (graus)",
+        ["SETTINGS"] = "CONFIGURAÇÕES",
+        ["FILE MANAGER"] = "GERENCIADOR DE ARQUIVOS",
+        ["SAVE MAP"] = "SALVAR MAPA",
+        ["CANCEL"] = "CANCELAR",
+        ["FORMAT: NEW VERSION"] = "FORMATO: NOVA VERSÃO",
+        ["FORMAT: OLD VERSION"] = "FORMATO: VERSÃO ANTIGA",
+        ["ZONE EDITOR"] = "EDITOR DE ZONA",
+        ["SPAWN ZONE"] = "ZONA DE SPAWN",
+        ["TP ZONE TO ME"] = "TELEPORTAR ZONA PARA MIM",
+        ["RESIZE BOX"] = "REDIMENSIONAR CAIXA",
+        ["SAVE AREA"] = "SALVAR ÁREA",
+        ["CLEAR BOX"] = "LIMPAR CAIXA",
+        ["Disable invisible blocks"] = "Desativar blocos invisíveis",
+        ["Use LoadedMap"] = "Usar LoadedMap",
+        ["Auto-clear preview"] = "Limpar pré-visualização automaticamente",
+        ["Show warnings"] = "Mostrar avisos",
+        ["Preview transparency"] = "Transparência da pré-visualização",
+        ["Search timeout (s)"] = "Tempo de busca (s)",
+        ["Build speed (s)"] = "Velocidade de construção (s)",
+        ["Language"] = "Idioma",
+        ["CLOSE"] = "FECHAR",
+        ["Reset settings"] = "Restaurar configurações",
+        ["CREDITS AND LINKS"] = "CRÉDITOS E LINKS",
+        ["Discord server link https://discord.gg/JFSj6zwTc"] = "Link do servidor Discord https://discord.gg/JFSj6zwTc",
+        ["Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF"] = "Link do tutorial https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF",
+        ["Inspired by:\nModel manager by darki\nSteal maps from venoHub"] = "Inspirado em:\nModel manager por darki\nRoubar mapas do venoHub",
+        ["ON"] = "LIGADO",
+        ["OFF"] = "DESLIGADO",
+        ["hide"] = "ocultar",
+        ["show"] = "mostrar",
+        ["Spawn zone first!"] = "Crie a zona primeiro!",
+        ["Resize Active"] = "Redimensionando",
+        ["Preview Loaded"] = "Pré-visualização carregada",
+        ["File not found"] = "Arquivo não encontrado",
+        ["Error: No preview active"] = "Erro: Nenhuma pré-visualização ativa",
+        ["Error: Remotes not found"] = "Erro: Remotes não encontrados",
+        ["No data to upload"] = "Sem dados para enviar",
+        ["Upload Cancelled by user"] = "Envio cancelado pelo usuário",
+        ["Upload Finished"] = "Envio finalizado",
+        ["Saved: "] = "Salvo: ",
+        ["parts (size: "] = "partes (tamanho: ",
+        ["KB)"] = "KB)",
+        ["Error saving file. Try again."] = "Erro ao salvar. Tente novamente.",
+        ["Blocks: "] = "Blocos: ",
+        [" (fails: "] = " (falhas: ",
+        ["Settings reset"] = "Configurações restauradas",
+    }
+}
+
+local currentLanguage = "English"
+local function translate(key)
+    return LANG[currentLanguage][key] or key
+end
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  FUNCIONES AUXILIARES (DEFINIDAS ANTES DE SU USO)
+-- ═══════════════════════════════════════════════════════════════════════════
+
+local function formatTime(seconds)
+    if math.random() < 0.005 then return "1 year" end
+    seconds = math.max(0, math.floor(seconds + 0.5))
+    if seconds < 60 then return seconds .. "s"
+    elseif seconds < 3600 then
+        local m = math.floor(seconds / 60)
+        local s = seconds % 60
+        return s == 0 and m .. "m" or m .. "m " .. s .. "s"
+    else
+        local h = math.floor(seconds / 3600)
+        local m = math.floor((seconds % 3600) / 60)
+        return m == 0 and h .. "h" or h .. "h " .. m .. "m"
+    end
+end
+
+local cam = workspace.CurrentCamera
+local function lockCamera()
+    cam.CameraType = Enum.CameraType.Scriptable
+end
+local function unlockCamera()
+    cam.CameraType = Enum.CameraType.Custom
+end
+
+-- ── Activar redimensionamiento de la zona ──────────────────────────────
+local function activateZoneScale()
+    if not SelectionPart.Parent then return end
+    if scaleHandle then scaleHandle:Destroy(); scaleHandle = nil end
+    scaleHandle = Instance.new("Handles")
+    scaleHandle.Parent = ScreenGui
+    scaleHandle.Adornee = SelectionPart
+    scaleHandle.Style = Enum.HandlesStyle.Resize
+    scaleHandle.Color3 = Color3.fromRGB(0, 0, 128)
+    local lastDist = 0
+
+    scaleHandle.MouseButton1Down:Connect(function()
+        lockCamera()
+    end)
+
+    scaleHandle.MouseDrag:Connect(function(face, distance)
+        local snap = 1
+        local snapped = math.floor(distance / snap + 0.5) * snap
+        local delta = snapped - lastDist
+        if delta == 0 then return end
+        local normalId = Vector3.FromNormalId(face)
+        SelectionPart.Size = SelectionPart.Size + (Vector3.new(math.abs(normalId.X), math.abs(normalId.Y), math.abs(normalId.Z)) * delta)
+        SelectionPart.CFrame = SelectionPart.CFrame * CFrame.new(normalId * (delta / 2))
+        lastDist = snapped
+    end)
+
+    scaleHandle.MouseButton1Up:Connect(function()
+        lastDist = 0
+        unlockCamera()
+    end)
+end
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  GUI PRINCIPAL
+-- ═══════════════════════════════════════════════════════════════════════════
+local ScreenGui = Instance.new("ScreenGui", lp.PlayerGui)
+ScreenGui.Name = "RMS"
+ScreenGui.ResetOnSpawn = false
+
+-- ── Progress Bar ──────────────────────────────────────────────────────────
+local ProgressFrame = Instance.new("Frame")
+ProgressFrame.Name = "LoadingUI"
+ProgressFrame.Size = UDim2.new(0, 400, 0, 60)
+ProgressFrame.Position = UDim2.new(0.5, -200, 0.5, -30)
+ProgressFrame.BackgroundColor3 = Color3.fromHex("A85E5E")
+ProgressFrame.BorderSizePixel = 0
+ProgressFrame.Visible = false
+ProgressFrame.Parent = ScreenGui
+ProgressFrame.ZIndex = 50
+Instance.new("UICorner", ProgressFrame).CornerRadius = UDim.new(0, 10)
+
+local Fill = Instance.new("Frame", ProgressFrame)
+Fill.Name = "Fill"
+Fill.Size = UDim2.new(0, 0, 0, 10)
+Fill.Position = UDim2.new(0, 10, 0, 40)
+Fill.BackgroundColor3 = Color3.fromHex("39943F")
+Fill.BorderSizePixel = 0
+Fill.ZIndex = 51
+Instance.new("UICorner", Fill).CornerRadius = UDim.new(0, 10)
+
+local ProgressText = Instance.new("TextLabel", ProgressFrame)
+ProgressText.Size = UDim2.new(1, -50, 0, 30)
+ProgressText.BackgroundTransparency = 1
+ProgressText.Text = "loading..."
+ProgressText.TextColor3 = Color3.new(1, 1, 1)
+ProgressText.Font = Enum.Font.GothamBold
+ProgressText.TextSize = 14
+ProgressText.ZIndex = 52
+
+-- ── Cancel Button ──────────────────────────────────────────────────────
+local CancelBtn = Instance.new("ImageButton", ProgressFrame)
+CancelBtn.Name = "CancelBtn"
+CancelBtn.Size = UDim2.new(0, 30, 0, 30)
+CancelBtn.Position = UDim2.new(1, -40, 0, 15)
+CancelBtn.BackgroundTransparency = 1
+CancelBtn.Image = "rbxassetid://78813283084041"
+CancelBtn.ZIndex = 60
+Instance.new("UICorner", CancelBtn).CornerRadius = UDim.new(1, 0)
+
+local uploadCancelFlag = false
+CancelBtn.MouseButton1Click:Connect(function()
+    uploadCancelFlag = true
+    ProgressText.Text = "Cancelling..."
+end)
+
+-- ── Preview Folder ──────────────────────────────────────────────────────
+local PreviewFolder = Instance.new("Folder")
+PreviewFolder.Name = "LocalPreview"
+PreviewFolder.Parent = workspace
+
+local SelectionPart = Instance.new("Part")
+SelectionPart.Name = "ZoneBox"
+SelectionPart.Size = Vector3.new(20, 20, 20)
+SelectionPart.Color = Color3.fromRGB(0, 0, 128)
+SelectionPart.Material = Enum.Material.Neon
+SelectionPart.Transparency = 0.7
+SelectionPart.CanCollide = false
+SelectionPart.Anchored = true
+
+local SelectionOutline = Instance.new("SelectionBox")
+SelectionOutline.Name = "Outline"
+SelectionOutline.Color3 = Color3.fromRGB(0, 0, 128)
+SelectionOutline.LineThickness = 0.05
+SelectionOutline.Adornee = nil
+SelectionOutline.Parent = Services.CoreGui
+
+-- ── Assets ──────────────────────────────────────────────────────────────
+local Sustitutos = {}
+
+local function loadAssets()
+    pcall(function()
+        local blocks = Services.RS:WaitForChild("Blocks", 15)
+        if not blocks then return end
+
+        local basic = blocks:WaitForChild("Basic", 5)
+        if basic then
+            Sustitutos["Standard"] = basic:WaitForChild("Block"):WaitForChild("Block")
+            Sustitutos["Sphere"] = basic:FindFirstChild("Sphere "):FindFirstChild("Sphere ")
+            local wedgeFolder = basic:FindFirstChild("Wedge")
+            if wedgeFolder then Sustitutos["Wedge"] = wedgeFolder:FindFirstChild("Wedge") end
+            local cylFolder = basic:FindFirstChild("Cylinder")
+            if cylFolder then Sustitutos["Cylinder"] = cylFolder:FindFirstChild("Cylinder") end
+            local transFolder = basic:FindFirstChild("TransparentBlock")
+            if transFolder then Sustitutos["Transparent"] = transFolder:FindFirstChild("TransparentBlock") end
+            local noclipFolder = basic:FindFirstChild("NoclipBlock")
+            if noclipFolder then Sustitutos["NoclipBasic"] = noclipFolder:FindFirstChild("NoclipBlock") end
+        end
+
+        local events = blocks:WaitForChild("Events", 5)
+        if events then
+            Sustitutos["NoClipEvent"] = events:FindFirstChild("NoClipBlock") or events:FindFirstChild("NoClip")
+            local invFolder = events:FindFirstChild("InvisibleBlock")
+            if invFolder then
+                Sustitutos["Invisible"] = invFolder:FindFirstChild("InvisibleBlock") or invFolder:FindFirstChildOfClass("Model") or invFolder
+            end
+        end
+
+        local lights = blocks:FindFirstChild("Lights")
+        if lights then
+            local cilb = lights:FindFirstChild("CustomInvisibleLightBlock")
+            if cilb then
+                Sustitutos["InvisibleLight"] = cilb:FindFirstChild("CustomInvisibleLightBlock") or cilb:FindFirstChildOfClass("Model") or cilb
+            end
+        end
+    end)
+end
+
+loadAssets()
+
+local function getRemotes()
+    local f = Services.RS:FindFirstChild("Functions")
+    if f then
+        return {
+            PlaceBlock = f:FindFirstChild("PlaceBlock"),
+            CommitResize = f:FindFirstChild("CommitResize"),
+            CommitMove = f:FindFirstChild("CommitMove"),
+            UpdateBlockSettings = f:FindFirstChild("UpdateBlockSettings"),
+        }
+    end
+    return {
+        PlaceBlock = Services.RS:FindFirstChild("PlaceBlock", true),
+        CommitResize = Services.RS:FindFirstChild("CommitResize", true),
+        CommitMove = Services.RS:FindFirstChild("CommitMove", true),
+        UpdateBlockSettings = Services.RS:FindFirstChild("UpdateBlockSettings", true),
+    }
+end
+
+local function getPiggyBlockType(p)
+    local sName = "Block"
+    pcall(function() if p:IsA("Part") then sName = p.Shape.Name end end)
+    local lowName = p.Name:lower()
+    local hasLight = p:FindFirstChildWhichIsA("PointLight") or p:FindFirstChildWhichIsA("SurfaceLight") or p:FindFirstChildWhichIsA("SpotLight")
+
+    if lowName:find("noclip") then return "NoClip"
+    elseif sName == "Cylinder" or lowName:find("cylinder") then return "Cylinder"
+    elseif (p.Transparency > 0 and p.Transparency < 0.9) or p.Material.Name == "Glass" then return "Transparent"
+    elseif lowName:find("invisible") or p.Transparency >= 0.9 then
+        if hasLight then return "InvisibleLight" else return "Invisible" end
+    elseif sName == "Ball" or sName == "Sphere" then return "Sphere"
+    elseif sName == "Wedge" or lowName:find("wedge") then return "Wedge"
+    end
+    return "Normal"
+end
+
+-- ── Generic Panel Creator ──────────────────────────────────────────────
+local function createPanel(nameKey, size, pos)
+    local Main = Instance.new("Frame")
+    Main.Name = nameKey
+    Main.Size = size
+    Main.Position = pos
+    Main.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+    Main.Active = true
+    Main.Draggable = true
+    Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+
+    local Header = Instance.new("Frame", Main)
+    Header.Size = UDim2.new(1, 0, 0, 35)
+    Header.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    Instance.new("UICorner", Header)
+
+    local Title = Instance.new("TextLabel", Header)
+    Title.Size = UDim2.new(0.8, 0, 1, 0)
+    Title.Position = UDim2.fromOffset(10, 0)
+    Title.Text = translate(nameKey)
+    Title:SetAttribute("TranslationKey", nameKey)
+    Title.TextColor3 = Color3.fromRGB(0, 255, 150)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 10
+    Title.BackgroundTransparency = 1
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    local Content = Instance.new("Frame", Main)
+    Content.Name = "Content"
+    Content.Size = UDim2.new(1, -20, 1, -45)
+    Content.Position = UDim2.fromOffset(10, 40)
+    Content.BackgroundTransparency = 1
+
+    local MinBtn = Instance.new("TextButton", Header)
+    MinBtn.Size = UDim2.fromOffset(30, 30)
+    MinBtn.Position = UDim2.new(1, -35, 0, 2)
+    MinBtn.Text = "-"
+    MinBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    MinBtn.TextColor3 = Color3.new(1, 1, 1)
+    Instance.new("UICorner", MinBtn)
+
+    local isMin = false
+    MinBtn.MouseButton1Click:Connect(function()
+        isMin = not isMin
+        Content.Visible = not isMin
+        Main:TweenSize(isMin and UDim2.fromOffset(size.X.Offset, 35) or size, "Out", "Quad", 0.3, true)
+        MinBtn.Text = isMin and "+" or "-"
+        Header.BackgroundTransparency = isMin and 0.5 or 0
+    end)
+
+    return Main, Content
+end
+
+-- ── File Manager ────────────────────────────────────────────────────────
+local PanelExplorer, ExpContent = createPanel("FILE MANAGER", UDim2.fromOffset(280, 400), UDim2.new(0.5, -140, 0.5, -200))
+PanelExplorer.Visible = false
+PanelExplorer.ZIndex = 100
+
+local ExpNameInput = Instance.new("TextBox", ExpContent)
+ExpNameInput.Size = UDim2.new(1, 0, 0, 35)
+ExpNameInput.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+ExpNameInput.TextColor3 = Color3.new(1, 1, 1)
+ExpNameInput.ZIndex = 101
+Instance.new("UICorner", ExpNameInput)
+
+local ExpScroll = Instance.new("ScrollingFrame", ExpContent)
+ExpScroll.Size = UDim2.new(1, 0, 1, -130)
+ExpScroll.Position = UDim2.fromOffset(0, 45)
+ExpScroll.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+ExpScroll.ScrollBarThickness = 4
+ExpScroll.ZIndex = 101
+Instance.new("UICorner", ExpScroll)
+
+local ExpLayout = Instance.new("UIListLayout", ExpScroll)
+ExpLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ExpLayout.Padding = UDim.new(0, 4)
+
+local ExpModeBtn = Instance.new("TextButton", ExpContent)
+ExpModeBtn.Size = UDim2.new(1, 0, 0, 35)
+ExpModeBtn.Position = UDim2.new(0, 0, 1, -80)
+ExpModeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 150)
+ExpModeBtn.TextColor3 = Color3.new(1, 1, 1)
+ExpModeBtn.ZIndex = 101
+Instance.new("UICorner", ExpModeBtn)
+ExpModeBtn:SetAttribute("TranslationKey", "FORMAT: NEW VERSION")
+
+local ExpConfirmBtn = Instance.new("TextButton", ExpContent)
+ExpConfirmBtn.Size = UDim2.new(0.48, 0, 0, 35)
+ExpConfirmBtn.Position = UDim2.new(0, 0, 1, -35)
+ExpConfirmBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 100)
+ExpConfirmBtn.TextColor3 = Color3.new(1, 1, 1)
+ExpConfirmBtn.ZIndex = 101
+Instance.new("UICorner", ExpConfirmBtn)
+ExpConfirmBtn:SetAttribute("TranslationKey", "SAVE MAP")
+
+local ExpCancelBtn = Instance.new("TextButton", ExpContent)
+ExpCancelBtn.Size = UDim2.new(0.48, 0, 0, 35)
+ExpCancelBtn.Position = UDim2.new(0.52, 0, 1, -35)
+ExpCancelBtn.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+ExpCancelBtn.TextColor3 = Color3.new(1, 1, 1)
+ExpCancelBtn.Text = "CANCEL"
+ExpCancelBtn.ZIndex = 101
+Instance.new("UICorner", ExpCancelBtn)
+ExpCancelBtn:SetAttribute("TranslationKey", "CANCEL")
+
+local expCallback = nil
+local currentFormat = "NEW"
+
+ExpModeBtn.MouseButton1Click:Connect(function()
+    if currentFormat == "NEW" then
+        currentFormat = "OLD"
+        ExpModeBtn.BackgroundColor3 = Color3.fromRGB(150, 100, 50)
+        ExpModeBtn:SetAttribute("TranslationKey", "FORMAT: OLD VERSION")
+    else
+        currentFormat = "NEW"
+        ExpModeBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 150)
+        ExpModeBtn:SetAttribute("TranslationKey", "FORMAT: NEW VERSION")
+    end
+    ExpModeBtn.Text = translate(ExpModeBtn:GetAttribute("TranslationKey"))
+end)
+
+ExpCancelBtn.MouseButton1Click:Connect(function() PanelExplorer.Visible = false end)
+
+ExpConfirmBtn.MouseButton1Click:Connect(function()
+    PanelExplorer.Visible = false
+    if expCallback then expCallback(ExpNameInput.Text, currentFormat) end
+end)
+
+local function refreshFileList()
+    for _, v in ipairs(ExpScroll:GetChildren()) do
+        if v:IsA("TextButton") then v:Destroy() end
+    end
+    local files = {}
+    if listfiles then
+        pcall(function()
+            for _, file in ipairs(listfiles(folderPath)) do
+                local name = file:match("([^/\\]+)%.json$")
+                if name then table.insert(files, name) end
+            end
+        end)
+    end
+    for _, f in ipairs(files) do
+        local btn = Instance.new("TextButton", ExpScroll)
+        btn.Size = UDim2.new(1, 0, 0, 25)
+        btn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+        btn.TextColor3 = Color3.new(1, 1, 1)
+        btn.Text = f
+        btn.ZIndex = 102
+        Instance.new("UICorner", btn)
+        btn.MouseButton1Click:Connect(function() ExpNameInput.Text = f end)
+    end
+    ExpScroll.CanvasSize = UDim2.new(0, 0, 0, #files * 29)
+end
+
+local function openFileManager(mode, defaultText, callback)
+    PanelExplorer.Parent = ScreenGui
+    local isSaveMode = (mode == "SAVE")
+    ExpModeBtn.Visible = isSaveMode
+    if isSaveMode then
+        ExpScroll.Size = UDim2.new(1, 0, 1, -135)
+        ExpConfirmBtn:SetAttribute("TranslationKey", "SAVE MAP")
+        ExpModeBtn:SetAttribute("TranslationKey", currentFormat == "NEW" and "FORMAT: NEW VERSION" or "FORMAT: OLD VERSION")
+    else
+        ExpScroll.Size = UDim2.new(1, 0, 1, -90)
+        ExpConfirmBtn:SetAttribute("TranslationKey", "SELECT MAP")
+    end
+    ExpNameInput.Text = defaultText
+    expCallback = callback
+    refreshFileList()
+    PanelExplorer.Visible = true
+    ExpModeBtn.Text = translate(ExpModeBtn:GetAttribute("TranslationKey"))
+    ExpConfirmBtn.Text = translate(ExpConfirmBtn:GetAttribute("TranslationKey"))
+end
+
+-- ── Preview Handles ─────────────────────────────────────────────────────
+local currentPreviewModel = nil
+local arcHandle, posHandle, scaleHandle, boundingPart = nil, nil, nil, nil
+
+local function cleanupHandles()
+    if arcHandle then arcHandle:Destroy(); arcHandle = nil end
+    if posHandle then posHandle:Destroy(); posHandle = nil end
+    if scaleHandle then scaleHandle:Destroy(); scaleHandle = nil end
+    if boundingPart then boundingPart:Destroy(); boundingPart = nil end
+    SelectionOutline.Adornee = nil
+    unlockCamera()
+end
+
+local function updateBoundingPart()
+    if not currentPreviewModel then return end
+    if boundingPart then boundingPart:Destroy() end
+    local cnf, size = currentPreviewModel:GetBoundingBox()
+    boundingPart = Instance.new("Part")
+    boundingPart.Name = "RMS_BoundingBox"
+    boundingPart.Transparency = 1
+    boundingPart.CanCollide = false
+    boundingPart.Anchored = true
+    boundingPart.Size = size
+    boundingPart.CFrame = cnf
+    boundingPart.Parent = currentPreviewModel
+end
+
+-- ── Settings ──────────────────────────────────────────────────────────────
+local settings = {
+    disableInvisible = false,
+    useLoadedMap = false,
+    buildDelay = 0.2,
+    autoClearPreview = false,
+    showWarnings = true,
+    searchTimeout = 15,
+    previewTransparency = 0.5,
+}
+
+-- Panel de ajustes (centrado)
+local PanelSettings, SetContent = createPanel("SETTINGS", UDim2.fromOffset(280, 370), UDim2.new(0.5, -140, 0.5, -170))
+PanelSettings.Parent = ScreenGui
+PanelSettings.Visible = false
+
+local toggleButtons = {}
+
+local function createToggle(parent, y, key, labelKey)
+    local lbl = Instance.new("TextLabel", parent)
+    lbl.Size = UDim2.new(0.6, 0, 0, 25)
+    lbl.Position = UDim2.fromOffset(0, y)
+    lbl.Text = translate(labelKey)
+    lbl:SetAttribute("TranslationKey", labelKey)
+    lbl.TextColor3 = Color3.new(1,1,1)
+    lbl.BackgroundTransparency = 1
+    lbl.Font = Enum.Font.GothamBold
+    lbl.TextSize = 11
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+
+    local btn = Instance.new("TextButton", parent)
+    btn.Size = UDim2.new(0.3, 0, 0, 25)
+    btn.Position = UDim2.new(0.7, 0, 0, y)
+    btn.Text = settings[key] and translate("ON") or translate("OFF")
+    btn.BackgroundColor3 = settings[key] and Color3.fromRGB(0,150,50) or Color3.fromRGB(150,50,50)
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 11
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+
+    table.insert(toggleButtons, {btn = btn, key = key})
+
+    btn.MouseButton1Click:Connect(function()
+        settings[key] = not settings[key]
+        btn.Text = settings[key] and translate("ON") or translate("OFF")
+        btn.BackgroundColor3 = settings[key] and Color3.fromRGB(0,150,50) or Color3.fromRGB(150,50,50)
+    end)
+    return btn
+end
+
+local function createSlider(parent, y, key, labelKey, minVal, maxVal, defaultVal)
+    local lbl = Instance.new("TextLabel", parent)
+    lbl.Size = UDim2.new(0.5, 0, 0, 25)
+    lbl.Position = UDim2.fromOffset(0, y)
+    lbl.Text = translate(labelKey) .. ": " .. string.format("%.2f", settings[key])
+    lbl:SetAttribute("TranslationKey", labelKey)
+    lbl.TextColor3 = Color3.new(1,1,1)
+    lbl.BackgroundTransparency = 1
+    lbl.Font = Enum.Font.GothamBold
+    lbl.TextSize = 11
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+
+    local track = Instance.new("Frame", parent)
+    track.Size = UDim2.new(0.3, 0, 0, 18)
+    track.Position = UDim2.new(0.55, 0, 0, y + 3)
+    track.BackgroundColor3 = Color3.fromRGB(18, 18, 30)
+    Instance.new("UICorner", track).CornerRadius = UDim.new(0, 5)
+
+    local fill = Instance.new("Frame", track)
+    fill.BackgroundColor3 = Color3.fromRGB(0, 200, 120)
+    fill.Size = UDim2.new(math.clamp((settings[key] - minVal) / (maxVal - minVal), 0, 1), 0, 1, 0)
+    Instance.new("UICorner", fill).CornerRadius = UDim.new(0, 5)
+
+    local box = Instance.new("TextBox", parent)
+    box.Size = UDim2.new(0.15, 0, 0, 25)
+    box.Position = UDim2.new(0.85, 0, 0, y)
+    box.Text = string.format("%.2f", settings[key])
+    box.BackgroundColor3 = Color3.fromRGB(30,30,40)
+    box.TextColor3 = Color3.new(1,1,1)
+    box.Font = Enum.Font.Gotham
+    box.TextSize = 11
+    Instance.new("UICorner", box).CornerRadius = UDim.new(0,4)
+
+    local drag = false
+    local function setVal(v)
+        v = math.clamp(v, minVal, maxVal)
+        settings[key] = v
+        fill.Size = UDim2.new((v - minVal) / (maxVal - minVal), 0, 1, 0)
+        box.Text = string.format("%.2f", v)
+        lbl.Text = translate(labelKey) .. ": " .. string.format("%.2f", v)
+    end
+
+    track.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            drag = true
+            local r = math.clamp((i.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+            setVal(minVal + r * (maxVal - minVal))
+        end
+    end)
+    track.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then drag = false end
+    end)
+    Services.UserInput.InputChanged:Connect(function(i)
+        if drag and i.UserInputType == Enum.UserInputType.MouseMovement then
+            local r = math.clamp((i.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+            setVal(minVal + r * (maxVal - minVal))
+        end
+    end)
+
+    box.FocusLost:Connect(function()
+        local n = tonumber(box.Text)
+        if n then setVal(n) else box.Text = string.format("%.2f", settings[key]) end
+    end)
+
+    return box
+end
+
+local yOff = 5
+createToggle(SetContent, yOff, "disableInvisible", "Disable invisible blocks")
+yOff = yOff + 30
+createToggle(SetContent, yOff, "useLoadedMap", "Use LoadedMap")
+yOff = yOff + 30
+createToggle(SetContent, yOff, "autoClearPreview", "Auto-clear preview")
+yOff = yOff + 30
+createToggle(SetContent, yOff, "showWarnings", "Show warnings")
+yOff = yOff + 30
+
+-- Preview transparency slider
+createSlider(SetContent, yOff, "previewTransparency", "Preview transparency", 0, 1, 0.5)
+yOff = yOff + 30
+
+-- Search timeout slider
+local timeoutLabel = Instance.new("TextLabel", SetContent)
+timeoutLabel.Size = UDim2.new(0.5, 0, 0, 25)
+timeoutLabel.Position = UDim2.fromOffset(0, yOff)
+timeoutLabel.Text = translate("Search timeout (s)") .. ": " .. settings.searchTimeout .. "s"
+timeoutLabel:SetAttribute("TranslationKey", "Search timeout (s)")
+timeoutLabel.TextColor3 = Color3.new(1,1,1)
+timeoutLabel.BackgroundTransparency = 1
+timeoutLabel.Font = Enum.Font.GothamBold
+timeoutLabel.TextSize = 11
+timeoutLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local timeoutBox = Instance.new("TextBox", SetContent)
+timeoutBox.Size = UDim2.new(0.3, 0, 0, 25)
+timeoutBox.Position = UDim2.new(0.7, 0, 0, yOff)
+timeoutBox.Text = tostring(settings.searchTimeout)
+timeoutBox.BackgroundColor3 = Color3.fromRGB(30,30,40)
+timeoutBox.TextColor3 = Color3.new(1,1,1)
+timeoutBox.Font = Enum.Font.Gotham
+timeoutBox.TextSize = 11
+Instance.new("UICorner", timeoutBox).CornerRadius = UDim.new(0,4)
+
+timeoutBox.FocusLost:Connect(function()
+    local val = tonumber(timeoutBox.Text)
+    if val and val >= 1 then
+        settings.searchTimeout = val
+        timeoutLabel.Text = translate("Search timeout (s)") .. ": " .. val .. "s"
+    else
+        timeoutBox.Text = tostring(settings.searchTimeout)
+    end
+end)
+yOff = yOff + 30
+
+-- Build speed slider
+local speedLabel = Instance.new("TextLabel", SetContent)
+speedLabel.Size = UDim2.new(0.5, 0, 0, 25)
+speedLabel.Position = UDim2.fromOffset(0, yOff)
+speedLabel.Text = translate("Build speed (s)") .. ": " .. settings.buildDelay .. "s"
+speedLabel:SetAttribute("TranslationKey", "Build speed (s)")
+speedLabel.TextColor3 = Color3.new(1,1,1)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Font = Enum.Font.GothamBold
+speedLabel.TextSize = 11
+speedLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local speedBox = Instance.new("TextBox", SetContent)
+speedBox.Size = UDim2.new(0.3, 0, 0, 25)
+speedBox.Position = UDim2.new(0.7, 0, 0, yOff)
+speedBox.Text = tostring(settings.buildDelay)
+speedBox.BackgroundColor3 = Color3.fromRGB(30,30,40)
+speedBox.TextColor3 = Color3.new(1,1,1)
+speedBox.Font = Enum.Font.Gotham
+speedBox.TextSize = 11
+Instance.new("UICorner", speedBox).CornerRadius = UDim.new(0,4)
+
+speedBox.FocusLost:Connect(function()
+    local val = tonumber(speedBox.Text)
+    if val and val >= 0 then
+        settings.buildDelay = val
+        speedLabel.Text = translate("Build speed (s)") .. ": " .. val .. "s"
+    else
+        speedBox.Text = tostring(settings.buildDelay)
+    end
+end)
+yOff = yOff + 30
+
+-- Language selector
+local langLabel = Instance.new("TextLabel", SetContent)
+langLabel.Size = UDim2.new(0.4, 0, 0, 25)
+langLabel.Position = UDim2.fromOffset(0, yOff)
+langLabel.Text = translate("Language") .. ":"
+langLabel:SetAttribute("TranslationKey", "Language")
+langLabel.TextColor3 = Color3.new(1,1,1)
+langLabel.BackgroundTransparency = 1
+langLabel.Font = Enum.Font.GothamBold
+langLabel.TextSize = 11
+langLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local langBtn = Instance.new("TextButton", SetContent)
+langBtn.Size = UDim2.new(0.4, 0, 0, 25)
+langBtn.Position = UDim2.new(0.6, 0, 0, yOff)
+langBtn.Text = currentLanguage
+langBtn.BackgroundColor3 = Color3.fromRGB(40,40,80)
+langBtn.TextColor3 = Color3.new(1,1,1)
+langBtn.Font = Enum.Font.GothamBold
+langBtn.TextSize = 11
+Instance.new("UICorner", langBtn).CornerRadius = UDim.new(0,4)
+
+local langOrder = {"English", "Spanish", "Portuguese"}
+langBtn.MouseButton1Click:Connect(function()
+    local idx = table.find(langOrder, currentLanguage)
+    idx = idx and (idx % #langOrder) + 1 or 1
+    currentLanguage = langOrder[idx]
+    langBtn.Text = currentLanguage
+    updateUITexts()
+end)
+yOff = yOff + 30
+
+-- Reset settings button
+local resetBtn = Instance.new("TextButton", SetContent)
+resetBtn.Size = UDim2.new(0.5, 0, 0, 30)
+resetBtn.Position = UDim2.new(0.25, 0, 0, yOff)
+resetBtn.Text = translate("Reset settings")
+resetBtn:SetAttribute("TranslationKey", "Reset settings")
+resetBtn.BackgroundColor3 = Color3.fromRGB(150, 100, 50)
+resetBtn.TextColor3 = Color3.new(1,1,1)
+resetBtn.Font = Enum.Font.GothamBold
+resetBtn.TextSize = 11
+Instance.new("UICorner", resetBtn).CornerRadius = UDim.new(0,6)
+
+resetBtn.MouseButton1Click:Connect(function()
+    settings.disableInvisible = false
+    settings.useLoadedMap = false
+    settings.autoClearPreview = false
+    settings.showWarnings = true
+    settings.searchTimeout = 15
+    settings.buildDelay = 0.2
+    settings.previewTransparency = 0.5
+    -- Actualizar botones
+    for _, t in ipairs(toggleButtons) do
+        local btn = t.btn
+        local key = t.key
+        btn.Text = settings[key] and translate("ON") or translate("OFF")
+        btn.BackgroundColor3 = settings[key] and Color3.fromRGB(0,150,50) or Color3.fromRGB(150,50,50)
+    end
+    timeoutBox.Text = tostring(settings.searchTimeout)
+    timeoutLabel.Text = translate("Search timeout (s)") .. ": " .. settings.searchTimeout .. "s"
+    speedBox.Text = tostring(settings.buildDelay)
+    speedLabel.Text = translate("Build speed (s)") .. ": " .. settings.buildDelay .. "s"
+    Status.Text = translate("Settings reset")
+end)
+yOff = yOff + 30
+
+-- Close button
+local closeSetBtn = Instance.new("TextButton", SetContent)
+closeSetBtn.Size = UDim2.new(0.5, 0, 0, 30)
+closeSetBtn.Position = UDim2.new(0.25, 0, 0, yOff)
+closeSetBtn.Text = translate("CLOSE")
+closeSetBtn:SetAttribute("TranslationKey", "CLOSE")
+closeSetBtn.BackgroundColor3 = Color3.fromRGB(80,80,120)
+closeSetBtn.TextColor3 = Color3.new(1,1,1)
+closeSetBtn.Font = Enum.Font.GothamBold
+closeSetBtn.TextSize = 12
+Instance.new("UICorner", closeSetBtn).CornerRadius = UDim.new(0,6)
+closeSetBtn.MouseButton1Click:Connect(function() PanelSettings.Visible = false end)
+
+-- ── Main Panel (AUTOBUILD) ──────────────────────────────────────────────
+local PanelBuild, BuildContent = createPanel("AUTOBUILD", UDim2.fromOffset(280, 380), UDim2.new(0.5, -260, 0.5, -300))
+PanelBuild.Parent = ScreenGui
+
+local MapInputBtn = Instance.new("TextButton", BuildContent)
+MapInputBtn.Size = UDim2.new(1, 0, 0, 35)
+MapInputBtn.Text = "Map1"
+MapInputBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+MapInputBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", MapInputBtn)
+MapInputBtn:SetAttribute("TranslationKey", "SELECT MAP")
+
+local PreviewBtn = Instance.new("TextButton", BuildContent)
+PreviewBtn.Size = UDim2.new(1, 0, 0, 40)
+PreviewBtn.Position = UDim2.fromOffset(0, 45)
+PreviewBtn.Text = translate("PREVIEW LOCAL")
+PreviewBtn:SetAttribute("TranslationKey", "PREVIEW LOCAL")
+PreviewBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+PreviewBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", PreviewBtn)
+
+local UploadBtn = Instance.new("TextButton", BuildContent)
+UploadBtn.Size = UDim2.new(1, 0, 0, 40)
+UploadBtn.Position = UDim2.fromOffset(0, 95)
+UploadBtn.Text = translate("UPLOAD SERVER")
+UploadBtn:SetAttribute("TranslationKey", "UPLOAD SERVER")
+UploadBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+UploadBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", UploadBtn)
+
+local ClearPrevBtn = Instance.new("TextButton", BuildContent)
+ClearPrevBtn.Size = UDim2.new(0.3, 0, 0, 30)
+ClearPrevBtn.Position = UDim2.fromOffset(0, 145)
+ClearPrevBtn.Text = translate("CLEAR")
+ClearPrevBtn:SetAttribute("TranslationKey", "CLEAR")
+ClearPrevBtn.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+ClearPrevBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", ClearPrevBtn)
+
+local MoveBtn = Instance.new("TextButton", BuildContent)
+MoveBtn.Size = UDim2.new(0.32, 0, 0, 30)
+MoveBtn.Position = UDim2.new(0.34, 0, 0, 145)
+MoveBtn.Text = translate("MOVE")
+MoveBtn:SetAttribute("TranslationKey", "MOVE")
+MoveBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
+MoveBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", MoveBtn)
+
+local RotateBtn = Instance.new("TextButton", BuildContent)
+RotateBtn.Size = UDim2.new(0.32, 0, 0, 30)
+RotateBtn.Position = UDim2.new(0.68, 0, 0, 145)
+RotateBtn.Text = translate("ROTATE")
+RotateBtn:SetAttribute("TranslationKey", "ROTATE")
+RotateBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
+RotateBtn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", RotateBtn)
+
+local Status = Instance.new("TextLabel", BuildContent)
+Status.Size = UDim2.new(1, 0, 0, 40)
+Status.Position = UDim2.fromOffset(0, 185)
+Status.Text = translate("Status: Idle")
+Status:SetAttribute("TranslationKey", "Status: Idle")
+Status.TextColor3 = Color3.fromRGB(150, 150, 150)
+Status.BackgroundTransparency = 1
+Status.TextWrapped = true
+
+-- Grid Snapping
+local GridSnapLabel = Instance.new("TextLabel", BuildContent)
+GridSnapLabel.Size = UDim2.new(0.4, 0, 0, 20)
+GridSnapLabel.Position = UDim2.fromOffset(0, 230)
+GridSnapLabel.Text = translate("Move Snap")
+GridSnapLabel:SetAttribute("TranslationKey", "Move Snap")
+GridSnapLabel.TextColor3 = Color3.new(1, 1, 1)
+GridSnapLabel.BackgroundTransparency = 1
+GridSnapLabel.Font = Enum.Font.GothamBold
+GridSnapLabel.TextSize = 10
+
+local GridSnapBox = Instance.new("TextBox", BuildContent)
+GridSnapBox.Size = UDim2.new(0.2, 0, 0, 20)
+GridSnapBox.Position = UDim2.fromOffset(100, 230)
+GridSnapBox.Text = "1"
+GridSnapBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+GridSnapBox.TextColor3 = Color3.new(1, 1, 1)
+GridSnapBox.Font = Enum.Font.Gotham
+GridSnapBox.TextSize = 10
+Instance.new("UICorner", GridSnapBox).CornerRadius = UDim.new(0, 4)
+
+local AngleSnapLabel = Instance.new("TextLabel", BuildContent)
+AngleSnapLabel.Size = UDim2.new(0.4, 0, 0, 20)
+AngleSnapLabel.Position = UDim2.fromOffset(0, 260)
+AngleSnapLabel.Text = translate("Angle Snap (deg)")
+AngleSnapLabel:SetAttribute("TranslationKey", "Angle Snap (deg)")
+AngleSnapLabel.TextColor3 = Color3.new(1, 1, 1)
+AngleSnapLabel.BackgroundTransparency = 1
+AngleSnapLabel.Font = Enum.Font.GothamBold
+AngleSnapLabel.TextSize = 10
+
+local AngleSnapBox = Instance.new("TextBox", BuildContent)
+AngleSnapBox.Size = UDim2.new(0.2, 0, 0, 20)
+AngleSnapBox.Position = UDim2.fromOffset(100, 260)
+AngleSnapBox.Text = "15"
+AngleSnapBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+AngleSnapBox.TextColor3 = Color3.new(1, 1, 1)
+AngleSnapBox.Font = Enum.Font.Gotham
+AngleSnapBox.TextSize = 10
+Instance.new("UICorner", AngleSnapBox).CornerRadius = UDim.new(0, 4)
+
+-- Settings button
+local SettingsBtn = Instance.new("TextButton", BuildContent)
+SettingsBtn.Size = UDim2.new(0.4, 0, 0, 25)
+SettingsBtn.Position = UDim2.fromOffset(0, 290)
+SettingsBtn.Text = translate("SETTINGS")
+SettingsBtn:SetAttribute("TranslationKey", "SETTINGS")
+SettingsBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 120)
+SettingsBtn.TextColor3 = Color3.new(1,1,1)
+SettingsBtn.Font = Enum.Font.GothamBold
+SettingsBtn.TextSize = 10
+Instance.new("UICorner", SettingsBtn).CornerRadius = UDim.new(0, 4)
+SettingsBtn.MouseButton1Click:Connect(function()
+    PanelSettings.Visible = not PanelSettings.Visible
+end)
+
+-- ── Zone Editor ──────────────────────────────────────────────────────────
+local PanelZone, ZoneContent = createPanel("ZONE EDITOR", UDim2.fromOffset(200, 280), UDim2.new(0.5, 50, 0.5, -260))
+PanelZone.Parent = ScreenGui
+
+local function zoneBtn(textKey, pos, color)
+    local b = Instance.new("TextButton", ZoneContent)
+    b.Size = UDim2.new(1, 0, 0, 35)
+    b.Position = pos
+    b.Text = translate(textKey)
+    b:SetAttribute("TranslationKey", textKey)
+    b.BackgroundColor3 = color or Color3.fromRGB(40, 40, 50)
+    b.TextColor3 = Color3.new(1, 1, 1)
+    Instance.new("UICorner", b)
+    return b
+end
+
+local SpawnZ = zoneBtn("SPAWN ZONE", UDim2.fromOffset(0, 5))
+local MoveZ = zoneBtn("TP ZONE TO ME", UDim2.fromOffset(0, 45))
+local ResizeZ = zoneBtn("RESIZE BOX", UDim2.fromOffset(0, 85), Color3.fromRGB(0, 80, 150))
+local SaveZ = zoneBtn("SAVE AREA", UDim2.fromOffset(0, 125), Color3.fromRGB(0, 120, 60))
+local ClearBoxBtn = zoneBtn("CLEAR BOX", UDim2.fromOffset(0, 165), Color3.fromRGB(150, 50, 50))
+
+ClearBoxBtn.MouseButton1Click:Connect(function()
+    SelectionPart.Parent = nil
+    SelectionOutline.Adornee = nil
+    cleanupHandles()
+    Status.Text = translate("Status: Idle")
+end)
+
+SpawnZ.MouseButton1Click:Connect(function()
+    SelectionPart.Parent = workspace
+    SelectionPart.CFrame = lp.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+    SelectionOutline.Adornee = SelectionPart
+end)
+
+MoveZ.MouseButton1Click:Connect(function()
+    SelectionPart.CFrame = lp.Character.HumanoidRootPart.CFrame
+end)
+
+ResizeZ.MouseButton1Click:Connect(function()
+    if not SelectionPart.Parent then
+        Status.Text = translate("Spawn zone first!")
+        return
+    end
+    activateZoneScale()
+    Status.Text = translate("Resize Active")
+end)
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  SAVE ZONE (solo bloques, sin gates ni links)
+-- ═══════════════════════════════════════════════════════════════════════════
+SaveZ.MouseButton1Click:Connect(function()
+    if not SelectionPart.Parent then
+        Status.Text = translate("Spawn zone first!")
+        return
+    end
+
+    openFileManager("SAVE", "NewMap", function(saveName, format)
+        local data = {}
+        local cf, sz = SelectionPart.CFrame, SelectionPart.Size
+        local root = workspace:FindFirstChild("LoadedMap") or workspace:FindFirstChild("BuildModel") or workspace
+
+        if not root then
+            Status.Text = "No BuildModel/LoadedMap found"
+            return
+        end
+
+        for _, obj in ipairs(root:GetChildren()) do
+            for _, p in ipairs(obj:GetDescendants()) do
+                if p:IsA("BasePart") and not p:IsDescendantOf(lp.Character) and p ~= SelectionPart then
+                    local lpPos = cf:PointToObjectSpace(p.Position)
+                    if math.abs(lpPos.X) <= sz.X/2 and math.abs(lpPos.Y) <= sz.Y/2 and math.abs(lpPos.Z) <= sz.Z/2 then
+                        local lightData = nil
+                        local lightObj = p:FindFirstChildWhichIsA("PointLight") or p:FindFirstChildWhichIsA("SurfaceLight") or p:FindFirstChildWhichIsA("SpotLight")
+                        if lightObj then
+                            lightData = {
+                                R = math.floor(lightObj.Color.R * 255),
+                                G = math.floor(lightObj.Color.G * 255),
+                                B = math.floor(lightObj.Color.B * 255),
+                                Brightness = lightObj.Brightness,
+                                Range = lightObj.Range or 13
+                            }
+                        end
+
+                        if format == "NEW" then
+                            local pType = getPiggyBlockType(p)
+                            table.insert(data, {
+                                pt = pType,
+                                p = {p.Position.X, p.Position.Y, p.Position.Z},
+                                r = {p.Orientation.X, p.Orientation.Y, p.Orientation.Z},
+                                s = {p.Size.X, p.Size.Y, p.Size.Z},
+                                c = {p.Color.r, p.Color.g, p.Color.b},
+                                m = p.Material.Name,
+                                light = lightData
+                            })
+                        else
+                            local sName = "Block"
+                            pcall(function() if p:IsA("Part") then sName = p.Shape.Name end end)
+                            table.insert(data, {
+                                n = p.Name,
+                                shape = sName,
+                                p = {p.Position.X, p.Position.Y, p.Position.Z},
+                                r = {p.Orientation.X, p.Orientation.Y, p.Orientation.Z},
+                                s = {p.Size.X, p.Size.Y, p.Size.Z},
+                                c = {p.Color.r, p.Color.g, p.Color.b},
+                                t = p.Transparency,
+                                m = p.Material.Name,
+                                light = lightData
+                            })
+                        end
+                    end
+                end
+            end
+        end
+
+        local json = Services.Http:JSONEncode(data)
+        local filePath = folderPath .. saveName .. ".json"
+
+        local saved = false
+        for attempt = 1, 3 do
+            local success, err = pcall(function()
+                writefile(filePath, json)
+            end)
+            if success then
+                saved = true
+                break
+            else
+                warn("Error saving (attempt "..attempt.."): "..tostring(err))
+                task.wait(0.5)
+            end
+        end
+
+        if saved then
+            local size = #json
+            Status.Text = translate("Saved: ") .. #data .. " " .. translate("parts (size: ") .. string.format("%.1f", size/1024) .. " " .. translate("KB)")
+        else
+            Status.Text = translate("Error saving file. Try again.")
+        end
+    end)
+end)
+
+-- ── Credits Panel ────────────────────────────────────────────────────────
+local PanelCredits, CreditContent = createPanel("CREDITS AND LINKS", UDim2.fromOffset(230, 240), UDim2.new(0.5, 50, 0.5, 50))
+PanelCredits.Parent = ScreenGui
+
+local DiscordLabel = Instance.new("TextBox", CreditContent)
+DiscordLabel.Size = UDim2.new(1, 0, 0, 30)
+DiscordLabel.Text = translate("Discord server link https://discord.gg/JFSj6zwTc")
+DiscordLabel:SetAttribute("TranslationKey", "Discord server link https://discord.gg/JFSj6zwTc")
+DiscordLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
+DiscordLabel.BackgroundTransparency = 0.9
+DiscordLabel.Font = Enum.Font.Gotham
+DiscordLabel.TextSize = 8
+DiscordLabel.ClearTextOnFocus = false
+DiscordLabel.TextEditable = false
+
+local YoutubeLabel = Instance.new("TextBox", CreditContent)
+YoutubeLabel.Size = UDim2.new(1, 0, 0, 30)
+YoutubeLabel.Position = UDim2.fromOffset(0, 40)
+YoutubeLabel.Text = translate("Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF")
+YoutubeLabel:SetAttribute("TranslationKey", "Tutorial link https://youtu.be/yFnSC4etyFI?si=ntXO0e5tmit1KBUF")
+YoutubeLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
+YoutubeLabel.BackgroundTransparency = 0.9
+YoutubeLabel.Font = Enum.Font.Gotham
+YoutubeLabel.TextSize = 8
+YoutubeLabel.ClearTextOnFocus = false
+YoutubeLabel.TextEditable = false
+
+local InspiredLabel = Instance.new("TextLabel", CreditContent)
+InspiredLabel.Size = UDim2.new(1, 0, 0, 60)
+InspiredLabel.Position = UDim2.fromOffset(0, 80)
+InspiredLabel.Text = translate("Inspired by:\nModel manager by darki\nSteal maps from venoHub")
+InspiredLabel:SetAttribute("TranslationKey", "Inspired by:\nModel manager by darki\nSteal maps from venoHub")
+InspiredLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+InspiredLabel.BackgroundTransparency = 1
+InspiredLabel.Font = Enum.Font.Gotham
+InspiredLabel.TextSize = 9
+InspiredLabel.TextYAlignment = Enum.TextYAlignment.Top
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  BOTÓN TOGGLE (OCULTAR/MOSTRAR)
+-- ═══════════════════════════════════════════════════════════════════════════
+local ToggleFrame = Instance.new("Frame")
+ToggleFrame.Name = "ToggleFrame"
+ToggleFrame.Size = UDim2.new(0, 60, 0, 60)
+ToggleFrame.Position = UDim2.new(0, 10, 0.5, -30)
+ToggleFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+ToggleFrame.Active = true
+ToggleFrame.Draggable = true
+ToggleFrame.Visible = true
+ToggleFrame.ZIndex = 200
+ToggleFrame.Parent = ScreenGui
+Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0, 10)
+
+local ToggleBtn = Instance.new("TextButton", ToggleFrame)
+ToggleBtn.Size = UDim2.new(1, 0, 1, 0)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+ToggleBtn.Text = translate("hide")
+ToggleBtn:SetAttribute("TranslationKey", "hide")
+ToggleBtn.TextColor3 = Color3.new(1, 1, 1)
+ToggleBtn.Font = Enum.Font.GothamBold
+ToggleBtn.TextSize = 14
+ToggleBtn.ZIndex = 201
+Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 10)
+
+local menusVisible = true
+local allMenus = {PanelBuild, PanelZone, PanelExplorer, PanelCredits, PanelSettings}
+local visibilitySnapshot = {}
+
+local function toggleMenus()
+    if menusVisible then
+        visibilitySnapshot = {}
+        for i, menu in ipairs(allMenus) do
+            if menu then
+                visibilitySnapshot[i] = menu.Visible
+                menu.Visible = false
+            end
+        end
+        menusVisible = false
+        ToggleBtn.Text = translate("show")
+    else
+        for i, menu in ipairs(allMenus) do
+            if menu then
+                menu.Visible = visibilitySnapshot[i] or false
+            end
+        end
+        menusVisible = true
+        ToggleBtn.Text = translate("hide")
+    end
+end
+
+ToggleBtn.MouseButton1Click:Connect(toggleMenus)
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  FUNCIÓN PARA ACTUALIZAR TODOS LOS TEXTOS SEGÚN IDIOMA
+-- ═══════════════════════════════════════════════════════════════════════════
+function updateUITexts()
+    for _, obj in ipairs(ScreenGui:GetDescendants()) do
+        if (obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox")) and obj:GetAttribute("TranslationKey") then
+            local key = obj:GetAttribute("TranslationKey")
+            obj.Text = translate(key)
+        end
+    end
+
+    for _, t in ipairs(toggleButtons) do
+        local btn = t.btn
+        local key = t.key
+        btn.Text = settings[key] and translate("ON") or translate("OFF")
+    end
+
+    ToggleBtn.Text = translate(menusVisible and "hide" or "show")
+end
+
+updateUITexts()
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  EVENTOS DEL PANEL PRINCIPAL
+-- ═══════════════════════════════════════════════════════════════════════════
+
+MapInputBtn.MouseButton1Click:Connect(function()
+    openFileManager("LOAD", MapInputBtn.Text, function(selectedName)
+        MapInputBtn.Text = selectedName
+    end)
+end)
+
+-- ── PREVIEW LOCAL ──────────────────────────────────────────────────────
+PreviewBtn.MouseButton1Click:Connect(function()
+    local file = folderPath .. MapInputBtn.Text .. ".json"
+    if not isfile(file) then
+        Status.Text = translate("File not found")
+        return
+    end
+    PreviewFolder:ClearAllChildren()
+    cleanupHandles()
+    local rawData = Services.Http:JSONDecode(readfile(file))
+    local hrp = lp.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    local blocksData = rawData.blocks or rawData
+
+    currentPreviewModel = Instance.new("Model", PreviewFolder)
+    currentPreviewModel.Name = "Preview_Group"
+
+    local firstPos = Vector3.zero
+    if #blocksData > 0 then
+        firstPos = Vector3.new(blocksData[1].p[1], blocksData[1].p[2], blocksData[1].p[3])
+    else
+        firstPos = hrp.Position
+    end
+    local lastOffset = hrp.Position - firstPos
+
+    for i, d in ipairs(blocksData) do
+        local p = Instance.new("Part")
+        p.Name = tostring(i)
+        local pType = d.pt or "Normal"
+        local shape = "Block"
+        if d.shape then shape = d.shape end
+        if pType == "Cylinder" then shape = "Cylinder"
+        elseif pType == "Sphere" then shape = "Ball"
+        elseif pType == "Wedge" then shape = "Wedge"
+        end
+        pcall(function() p.Shape = shape end)
+        p.Size = Vector3.new(unpack(d.s))
+        p.Position = Vector3.new(unpack(d.p)) + lastOffset
+        p.Orientation = Vector3.new(unpack(d.r))
+        p.Color = Color3.new(unpack(d.c))
+        p.Transparency = settings.previewTransparency
+        p.CanCollide = false
+        p.Anchored = true
+        p.CastShadow = false
+        p.Parent = currentPreviewModel
+    end
+
+    updateBoundingPart()
+    Status.Text = translate("Preview Loaded")
+end)
+
+MoveBtn.MouseButton1Click:Connect(function()
+    if not currentPreviewModel then return end
+    cleanupHandles()
+    updateBoundingPart()
+    posHandle = Instance.new("Handles")
+    posHandle.Parent = ScreenGui
+    posHandle.Adornee = boundingPart
+    posHandle.Style = Enum.HandlesStyle.Movement
+    posHandle.Color3 = Color3.fromRGB(0, 100, 255)
+    local acc = 0
+
+    posHandle.MouseButton1Down:Connect(function()
+        lockCamera()
+    end)
+
+    posHandle.MouseDrag:Connect(function(face, distance)
+        local snap = tonumber(GridSnapBox.Text) or 1
+        local d = math.floor(distance / snap + 0.5) * snap
+        if d ~= acc then
+            local delta = Vector3.FromNormalId(face) * (d - acc)
+            local newCF = currentPreviewModel:GetPivot() * CFrame.new(delta)
+            currentPreviewModel:PivotTo(newCF)
+            boundingPart.CFrame = newCF
+            acc = d
+        end
+    end)
+
+    posHandle.MouseButton1Up:Connect(function()
+        acc = 0
+        unlockCamera()
+    end)
+end)
+
+RotateBtn.MouseButton1Click:Connect(function()
+    if not currentPreviewModel then return end
+    cleanupHandles()
+    updateBoundingPart()
+    arcHandle = Instance.new("ArcHandles")
+    arcHandle.Parent = ScreenGui
+    arcHandle.Adornee = boundingPart
+    arcHandle.Color3 = Color3.fromRGB(0, 100, 255)
+    local acc = 0
+
+    arcHandle.MouseButton1Down:Connect(function()
+        lockCamera()
+    end)
+
+    arcHandle.MouseDrag:Connect(function(axis, relative)
+        local angleDeg = tonumber(AngleSnapBox.Text) or 15
+        local snap = math.rad(angleDeg)
+        local r = math.floor(relative / snap + 0.5) * snap
+        if r ~= acc then
+            local rotCF = CFrame.fromAxisAngle(Vector3.FromAxis(axis), r - acc)
+            currentPreviewModel:PivotTo(currentPreviewModel:GetPivot() * rotCF)
+            boundingPart.CFrame = currentPreviewModel:GetPivot()
+            acc = r
+        end
+    end)
+
+    arcHandle.MouseButton1Up:Connect(function()
+        acc = 0
+        unlockCamera()
+    end)
+end)
+
+ClearPrevBtn.MouseButton1Click:Connect(function()
+    PreviewFolder:ClearAllChildren()
+    currentPreviewModel = nil
+    cleanupHandles()
+    Status.Text = translate("Status: Idle")
+end)
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  UPLOAD SERVER (con CommitMove para bloques invisibles)
+-- ═══════════════════════════════════════════════════════════════════════════
+local UPDATE_INTERVAL = 10
+
+UploadBtn.MouseButton1Click:Connect(function()
+    if not currentPreviewModel or #currentPreviewModel:GetChildren() == 0 then
+        Status.Text = translate("Error: No preview active")
+        return
+    end
+
+    uploadCancelFlag = false
+
+    loadAssets()
+    local remotes = getRemotes()
+    local pb = remotes.PlaceBlock
+    local cr = remotes.CommitResize
+    local cm = remotes.CommitMove       -- <-- NUEVO
+    local ubs = remotes.UpdateBlockSettings
+
+    if not pb or not cr or not cm then
+        Status.Text = translate("Error: Remotes not found (missing CommitMove?)")
+        return
+    end
+
+    local file = folderPath .. MapInputBtn.Text .. ".json"
+    if not isfile(file) then
+        Status.Text = translate("File not found")
+        return
+    end
+
+    local rawData = Services.Http:JSONDecode(readfile(file))
+    cleanupHandles()
+
+    ProgressFrame.Visible = true
+    Fill.Size = UDim2.new(0, 0, 0, 10)
+
+    local blocksData = rawData.blocks or rawData
+    local totalBlocks = #blocksData
+    local total = totalBlocks
+
+    if total == 0 then
+        ProgressFrame.Visible = false
+        Status.Text = translate("No data to upload")
+        return
+    end
+
+    local startTime = tick()
+    local processed = 0
+    local failedCount = 0
+    local searchTimeout = settings.searchTimeout or 15
+
+    -- Función para buscar el bloque colocado
+    local function findPlacedBlock(spawnPos, maxAttempts)
+        local attempts = 0
+        while attempts < maxAttempts and not uploadCancelFlag do
+            attempts = attempts + 1
+            local bm = workspace:FindFirstChild("BuildModel") or (settings.useLoadedMap and workspace:FindFirstChild("LoadedMap"))
+            if bm then
+                for _, v in ipairs(bm:GetChildren()) do
+                    if (v:GetPivot().Position - spawnPos).Magnitude < 5 then
+                        return v
+                    end
+                end
+            end
+            task.wait(0.5)
+        end
+        return nil
+    end
+
+    task.spawn(function()
+        for i = 1, totalBlocks do
+            if uploadCancelFlag then
+                Status.Text = translate("Upload Cancelled by user")
+                ProgressFrame.Visible = false
+                return
+            end
+
+            local d = blocksData[i]
+            if not d then
+                processed = processed + 1
+                failedCount = failedCount + 1
+                continue
+            end
+
+            -- Validar y extraer datos con valores predeterminados
+            local s = d.s and {unpack(d.s)} or {1,1,1}
+            local c = d.c and {unpack(d.c)} or {1,1,1}
+            local p = d.p and {unpack(d.p)} or {0,0,0}
+            local r = d.r and {unpack(d.r)} or {0,0,0}
+            local mat = d.m or "SmoothPlastic"
+            local light = d.light
+            local bType = d.pt or "Normal"
+
+            -- Obtener el template
+            local template = Sustitutos["Standard"]
+            if bType == "NoClip" then
+                template = Sustitutos["NoclipBasic"] or Sustitutos["NoClipEvent"] or template
+            elseif bType == "Cylinder" then
+                template = Sustitutos["Cylinder"] or template
+            elseif bType == "Transparent" then
+                template = Sustitutos["Transparent"] or template
+            elseif bType == "Invisible" or bType == "InvisibleLight" then
+                if settings.disableInvisible then
+                    processed = processed + 1
+                    continue
+                end
+                if bType == "InvisibleLight" then
+                    template = Sustitutos["InvisibleLight"] or template
+                else
+                    template = Sustitutos["Invisible"] or template
+                end
+            elseif bType == "Sphere" then
+                template = Sustitutos["Sphere"] or template
+            elseif bType == "Wedge" then
+                template = Sustitutos["Wedge"] or template
+            end
+
+            if not template then
+                template = Sustitutos["Standard"]
+                if not template then
+                    processed = processed + 1
+                    failedCount = failedCount + 1
+                    if settings.showWarnings then warn("No template for block", i) end
+                    continue
+                end
+            end
+
+            local prevPart = currentPreviewModel:FindFirstChild(tostring(i))
+            if not prevPart then
+                processed = processed + 1
+                failedCount = failedCount + 1
+                if settings.showWarnings then warn("Preview part missing for block", i) end
+                continue
+            end
+
+            local tPosCF = prevPart.CFrame
+            local finalPos = tPosCF.Position
+            local spawnPos = Vector3.new(finalPos.X, 4000, finalPos.Z)
+            local finalSize = Vector3.new(unpack(s))
+            local color = Color3.new(unpack(c))
+            local material = Enum.Material[mat] or Enum.Material.SmoothPlastic
+
+            -- Intentar colocar el bloque (con reintentos)
+            local placed = false
+            for attempt = 1, 3 do
+                if uploadCancelFlag then break end
+                local success, err = pcall(function()
+                    pb:InvokeServer(
+                        template,
+                        CFrame.new(spawnPos),
+                        BrickColor.new(color),
+                        material
+                    )
+                end)
+                if success then
+                    placed = true
+                    break
+                else
+                    if settings.showWarnings then warn("PlaceBlock attempt ", attempt, " failed: ", err) end
+                    task.wait(0.5)
+                end
+            end
+
+            if not placed then
+                processed = processed + 1
+                failedCount = failedCount + 1
+                if settings.showWarnings then warn("PlaceBlock failed after retries for block", i) end
+                continue
+            end
+
+            -- Buscar el bloque colocado
+            local currentBlock = findPlacedBlock(spawnPos, math.floor(searchTimeout / 0.5))
+
+            if currentBlock then
+                -- ==========================================================
+                --  BLOQUES INVISIBLES (incluyendo los que tienen luz)
+                --  Usamos CommitMove para mover el modelo completo,
+                --  y luego CommitResize para ajustar el tamaño de cada parte.
+                -- ==========================================================
+                if bType == "Invisible" or bType == "InvisibleLight" then
+                    -- 1. Mover el modelo completo a la posición final
+                    local moved = pcall(function()
+                        cm:InvokeServer(currentBlock, tPosCF)
+                    end)
+                    if not moved and settings.showWarnings then
+                        warn("CommitMove failed for invisible block", i)
+                    end
+
+                    -- 2. Redimensionar cada parte (usando su CFrame actual para no mover de nuevo)
+                    for _, part in ipairs(currentBlock:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            local partCF = part.CFrame
+                            pcall(function()
+                                cr:InvokeServer(currentBlock, {part, partCF, finalSize})
+                            end)
+                        end
+                    end
+
+                    -- 3. Si tiene luz, configurarla
+                    if bType == "InvisibleLight" and ubs and light then
+                        pcall(function()
+                            ubs:InvokeServer(currentBlock, {
+                                ["R"] = light.R or 255,
+                                ["G"] = light.G or 255,
+                                ["B"] = light.B or 255,
+                                ["Brightness"] = light.Brightness or 2,
+                                ["Range"] = light.Range or 13
+                            })
+                        end)
+                    end
+                else
+                    -- Bloque normal: usar CommitResize para mover y redimensionar
+                    local cp = currentBlock:FindFirstChild("ColorPart") or currentBlock:FindFirstChildOfClass("BasePart")
+                    if cp then
+                        pcall(function()
+                            cr:InvokeServer(currentBlock, {cp, tPosCF, finalSize})
+                        end)
+                    else
+                        if settings.showWarnings then warn("No ColorPart found for block", i) end
+                    end
+                end
+
+                prevPart:Destroy()
+            else
+                failedCount = failedCount + 1
+                if settings.showWarnings then warn("Block not found after placement for block", i) end
+            end
+
+            processed = processed + 1
+
+            -- Actualizar UI cada cierto número de bloques
+            if processed % UPDATE_INTERVAL == 0 or processed == total then
+                if uploadCancelFlag then
+                    Status.Text = translate("Upload Cancelled by user")
+                    ProgressFrame.Visible = false
+                    return
+                end
+                local percent = processed / total
+                local elapsed = tick() - startTime
+                local remaining = (processed < total) and ((elapsed / processed) * (total - processed)) or 0
+                Fill.Size = UDim2.new(percent, 0, 0, 10)
+                ProgressText.Text = string.format("%s %d%% | Est: %s | %s%d", translate("Blocks:"), math.floor(percent*100), formatTime(remaining), translate(" (fails: "), failedCount)
+                Status.Text = translate("Blocks: ") .. processed .. "/" .. total .. translate(" (fails: ") .. failedCount .. ")"
+                task.wait()
+            end
+
+            task.wait(settings.buildDelay)
+        end
+
+        if uploadCancelFlag then
+            Status.Text = translate("Upload Cancelled by user")
+            ProgressFrame.Visible = false
+            return
+        end
+
+        Status.Text = translate("Upload Finished") .. " (" .. total .. " elements, " .. failedCount .. " fails)"
+        if settings.autoClearPreview then
+            PreviewFolder:ClearAllChildren()
+            currentPreviewModel = nil
+            cleanupHandles()
+        end
+        task.wait(1)
+        ProgressFrame.Visible = false
+    end)
+end)
+
+print("RMS v6 cargado correctamente.")
