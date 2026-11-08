@@ -24,7 +24,7 @@ local LANG = {
     }
 }
 
-local currentLanguage = "Spanish"
+local currentLanguage = "English"
 local function translate(key) return LANG[currentLanguage][key] or key end
 
 local ScreenGui = Instance.new("ScreenGui", lp.PlayerGui)
@@ -597,13 +597,23 @@ InstantSaveBtn.MouseButton1Click:Connect(function()
     end)
 end)
 
+local PanelCredits, CreditContent = createPanel("CREDITS AND LINKS", UDim2.fromOffset(250, 220), UDim2.new(0.5, 70, 0.5, 60))
+PanelCredits.Parent = ScreenGui
+local function addCreditLabel(text, y, color)
+    local lbl = Instance.new("TextLabel", CreditContent)
+    lbl.Size = UDim2.new(1, 0, 0, 30); lbl.Position = UDim2.fromOffset(0, y); lbl.Text = text; lbl.TextColor3 = color or Color3.new(1,1,1); lbl.BackgroundTransparency = 1; lbl.Font = Enum.Font.Gotham; lbl.TextSize = 11; lbl.TextWrapped = true
+end
+addCreditLabel("Discord: https://discord.gg/JFSj6zwTc", 0, Color3.fromRGB(0, 255, 150))
+addCreditLabel("Tutorial: https://youtu.be/yFnSC4etyFI", 35, Color3.fromRGB(255, 50, 50))
+addCreditLabel("Inspired by:\nModel manager by darki\nSteal maps from venoHub", 70, Color3.fromRGB(180,180,180))
+
 local ToggleFrame = Instance.new("Frame"); ToggleFrame.Name = "ToggleFrame"; ToggleFrame.Size = UDim2.new(0, 60, 0, 60); ToggleFrame.Position = UDim2.new(0, 10, 0.5, -30); ToggleFrame.BackgroundColor3 = Colors.Panel; ToggleFrame.BackgroundTransparency = 0.2; ToggleFrame.Active = true; ToggleFrame.Draggable = true; ToggleFrame.ZIndex = 200; ToggleFrame.Parent = ScreenGui
 Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0, 12)
 local ToggleBtn = Instance.new("TextButton", ToggleFrame); ToggleBtn.Size = UDim2.new(1, 0, 1, 0); ToggleBtn.BackgroundColor3 = Colors.Dark; ToggleBtn.Text = translate("hide"); ToggleBtn:SetAttribute("TranslationKey", "hide"); ToggleBtn.TextColor3 = Color3.new(1,1,1); ToggleBtn.Font = Enum.Font.GothamBold; ToggleBtn.TextSize = 14; ToggleBtn.ZIndex = 201
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 12)
 
 local menusVisible = true
-local allMenus = {PanelBuild, PanelZone, PanelExplorer, PanelSettings}
+local allMenus = {PanelBuild, PanelZone, PanelExplorer, PanelCredits, PanelSettings}
 local visibilitySnapshot = {}
 local function toggleMenus()
     if menusVisible then
@@ -830,5 +840,3 @@ UploadBtn.MouseButton1Click:Connect(function()
         task.wait(1); ProgressFrame.Visible = false
     end)
 end)
-
-print("RMS cargado con éxito. Dynamic BPS y Texturas activas.")
