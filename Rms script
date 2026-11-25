@@ -14,19 +14,128 @@ if makefolder then pcall(function() makefolder("PiggyMaps") end) end
 
 local LANG = {
     English = {
-        ["AUTOBUILD"]="AUTOBUILD",["SELECT MAP"]="SELECT MAP",["PREVIEW LOCAL"]="PREVIEW LOCAL",["UPLOAD SERVER"]="UPLOAD SERVER",["CLEAR"]="CLEAR",["MOVE"]="MOVE",["ROTATE"]="ROTATE",["Status: Idle"]="Status: Idle",["Move Snap"]="Move Snap",["Angle Snap (deg)"]="Angle Snap (deg)",["SETTINGS"]="SETTINGS",["FILE MANAGER"]="FILE MANAGER",["SAVE MAP"]="SAVE MAP",["CANCEL"]="CANCEL",["FORMAT: NEW VERSION"]="FORMAT: NEW VERSION",["FORMAT: OLD VERSION"]="FORMAT: OLD VERSION",["ZONE EDITOR"]="ZONE EDITOR",["SPAWN ZONE"]="SPAWN ZONE",["TP ZONE TO ME"]="TP ZONE TO ME",["RESIZE BOX"]="RESIZE BOX",["SAVE AREA"]="SAVE AREA",["CLEAR BOX"]="CLEAR BOX",["INSTANT SAVE ALL"]="INSTANT SAVE ALL",["Disable invisible blocks"]="Disable invisible blocks",["Dont Build InvBlocks"]="Don't Build Invisible Blocks",["Save Players?"]="Save Players?",["Save NPCs?"]="Save NPCs?",["Save InvLights?"]="Save InvLights?",["Load InvLights?"]="Load InvLights?",["Skip Duplicates"]="Skip Duplicates",["Auto-clear preview"]="Auto-clear preview",["Show warnings"]="Show warnings",["Preview transparency"]="Preview transparency",["Search timeout (s)"]="Search timeout (s)",["Build speed (s)"]="Build speed (s)",["Language"]="Language",["CLOSE"]="CLOSE",["Reset settings"]="Reset settings",["CREDITS AND LINKS"]="CREDITS AND LINKS",["ON"]="ON",["OFF"]="OFF",["hide"]="hide",["show"]="show",["Spawn zone first!"]="Spawn zone first!",["Resize Active"]="Resize Active",["Preview Loaded"]="Preview Loaded",["File not found"]="File not found",["Error: No preview active"]="Error: No preview active",["Error: Remotes not found"]="Error: Remotes not found",["No data to upload"]="No data to upload",["Upload Cancelled by user"]="Upload Cancelled by user",["Upload Finished"]="Upload Finished",["Saved: "]="Saved: ",["parts (size: "]="parts (size: ",["KB)"]="KB)",["Error saving file. Try again."]="Error saving file. Try again.",["Blocks: "]="Blocks: ",[" (fails: "]=" (fails: ",["Settings reset"]="Settings reset",["Skipped invisible blocks"]="Skipped invisible blocks",["Resize handles hidden"]="Resize handles hidden",["Resize handles shown"]="Resize handles shown",["Blocks in file:"]="Blocks in file:",["Instant Save Complete"]="Instant Save Complete",["Size: "]="Size: ",
+        ["AUTOBUILD"]="AUTOBUILD",["SELECT MAP"]="SELECT MAP",["PREVIEW LOCAL"]="PREVIEW LOCAL",["UPLOAD SERVER"]="UPLOAD SERVER",["CLEAR"]="CLEAR",["MOVE"]="MOVE",["ROTATE"]="ROTATE",["Status: Idle"]="Status: Idle",["Move Snap"]="Move Snap",["Angle Snap (deg)"]="Angle Snap (deg)",["SETTINGS"]="SETTINGS",["FILE MANAGER"]="FILE MANAGER",["SAVE MAP"]="SAVE MAP",["CANCEL"]="CANCEL",["FORMAT: NEW VERSION"]="FORMAT: NEW VERSION",["FORMAT: OLD VERSION"]="FORMAT: OLD VERSION",["ZONE EDITOR"]="ZONE EDITOR",["SPAWN ZONE"]="SPAWN ZONE",["TP ZONE TO ME"]="TP ZONE TO ME",["RESIZE BOX"]="RESIZE BOX",["SAVE AREA"]="SAVE AREA",["CLEAR BOX"]="CLEAR BOX",["INSTANT SAVE ALL"]="INSTANT SAVE ALL",["Disable invisible blocks"]="Disable invisible blocks",["Dont Build InvBlocks"]="Don't Build Invisible Blocks",["Save Players?"]="Save Players?",["Save NPCs?"]="Save NPCs?",["Save InvLights?"]="Save InvLights?",["Load InvLights?"]="Load InvLights?",["Skip Duplicates"]="Skip Duplicates",["Auto-clear preview"]="Auto-clear preview",["Show warnings"]="Show warnings",["Preview transparency"]="Preview transparency",["Search timeout (s)"]="Search timeout (s)",["Build speed (s)"]="Build speed (s)",["Language"]="Language",["CLOSE"]="CLOSE",["Reset settings"]="Reset settings",["Reset Warning"]="Reset Warning",["CREDITS AND LINKS"]="CREDITS AND LINKS",["ON"]="ON",["OFF"]="OFF",["hide"]="hide",["show"]="show",["Spawn zone first!"]="Spawn zone first!",["Resize Active"]="Resize Active",["Preview Loaded"]="Preview Loaded",["File not found"]="File not found",["Error: No preview active"]="Error: No preview active",["Error: Remotes not found"]="Error: Remotes not found",["No data to upload"]="No data to upload",["Upload Cancelled by user"]="Upload Cancelled by user",["Upload Finished"]="Upload Finished",["Saved: "]="Saved: ",["parts (size: "]="parts (size: ",["KB)"]="KB)",["Error saving file. Try again."]="Error saving file. Try again.",["Blocks: "]="Blocks: ",[" (fails: "]=" (fails: ",["Settings reset"]="Settings reset",["Skipped invisible blocks"]="Skipped invisible blocks",["Resize handles hidden"]="Resize handles hidden",["Resize handles shown"]="Resize handles shown",["Blocks in file:"]="Blocks in file:",["Instant Save Complete"]="Instant Save Complete",["Size: "]="Size: ",
     },
     Spanish = {
-        ["AUTOBUILD"]="AUTOCONSTRUIR",["SELECT MAP"]="SELECCIONAR MAPA",["PREVIEW LOCAL"]="VISTA PREVIA LOCAL",["UPLOAD SERVER"]="SUBIR AL SERVIDOR",["CLEAR"]="LIMPIAR",["MOVE"]="MOVER",["ROTATE"]="ROTAR",["Status: Idle"]="Estado: Inactivo",["Move Snap"]="Ajuste de movimiento",["Angle Snap (deg)"]="Ajuste de ángulo (grados)",["SETTINGS"]="AJUSTES",["FILE MANAGER"]="ADMINISTRADOR DE ARCHIVOS",["SAVE MAP"]="GUARDAR MAPA",["CANCEL"]="CANCELAR",["FORMAT: NEW VERSION"]="FORMATO: NUEVA VERSIÓN",["FORMAT: OLD VERSION"]="FORMATO: VIEJA VERSIÓN",["ZONE EDITOR"]="EDITOR DE ZONA",["SPAWN ZONE"]="ZONA DE APARICIÓN",["TP ZONE TO ME"]="TELEPORTAR ZONA A MÍ",["RESIZE BOX"]="REDIMENSIONAR CAJA",["SAVE AREA"]="GUARDAR ÁREA",["CLEAR BOX"]="LIMPIAR CAJA",["INSTANT SAVE ALL"]="GUARDADO INSTANTÁNEO",["Disable invisible blocks"]="Desactivar bloques invisibles",["Dont Build InvBlocks"]="No construir bloques invisibles",["Save Players?"]="¿Guardar jugadores?",["Save NPCs?"]="¿Guardar NPCs?",["Save InvLights?"]="¿Guardar InvLights?",["Load InvLights?"]="¿Cargar InvLights?",["Skip Duplicates"]="Omitir duplicados",["Auto-clear preview"]="Limpiar vista previa automáticamente",["Show warnings"]="Mostrar advertencias",["Preview transparency"]="Transparencia de vista previa",["Search timeout (s)"]="Tiempo de búsqueda (s)",["Build speed (s)"]="Velocidad de construcción (s)",["Language"]="Idioma",["CLOSE"]="CERRAR",["Reset settings"]="Restablecer ajustes",["CREDITS AND LINKS"]="CRÉDITOS Y ENLACES",["ON"]="ACTIVADO",["OFF"]="DESACTIVADO",["hide"]="ocultar",["show"]="mostrar",["Spawn zone first!"]="¡Primero crea la zona!",["Resize Active"]="Redimensionando",["Preview Loaded"]="Vista previa cargada",["File not found"]="Archivo no encontrado",["Error: No preview active"]="Error: No hay vista previa activa",["Error: Remotes not found"]="Error: No se encontraron los remotes",["No data to upload"]="No hay datos para subir",["Upload Cancelled by user"]="Subida cancelada por el usuario",["Upload Finished"]="Subida finalizada",["Saved: "]="Guardado: ",["parts (size: "]="partes (tamaño: ",["KB)"]="KB)",["Error saving file. Try again."]="Error al guardar. Intenta de nuevo.",["Blocks: "]="Bloques: ",[" (fails: "]=" (fallos: ",["Settings reset"]="Ajustes restablecidos",["Skipped invisible blocks"]="Bloques invisibles omitidos",["Resize handles hidden"]="Controles de redimensionamiento ocultos",["Resize handles shown"]="Controles de redimensionamiento mostrados",["Blocks in file:"]="Bloques en archivo:",["Instant Save Complete"]="Guardado instantáneo completo",["Size: "]="Tamaño: ",
+        ["AUTOBUILD"]="AUTOCONSTRUIR",["SELECT MAP"]="SELECCIONAR MAPA",["PREVIEW LOCAL"]="VISTA PREVIA LOCAL",["UPLOAD SERVER"]="SUBIR AL SERVIDOR",["CLEAR"]="LIMPIAR",["MOVE"]="MOVER",["ROTATE"]="ROTAR",["Status: Idle"]="Estado: Inactivo",["Move Snap"]="Ajuste de movimiento",["Angle Snap (deg)"]="Ajuste de ángulo (grados)",["SETTINGS"]="AJUSTES",["FILE MANAGER"]="ADMINISTRADOR DE ARCHIVOS",["SAVE MAP"]="GUARDAR MAPA",["CANCEL"]="CANCELAR",["FORMAT: NEW VERSION"]="FORMATO: NUEVA VERSIÓN",["FORMAT: OLD VERSION"]="FORMATO: VIEJA VERSIÓN",["ZONE EDITOR"]="EDITOR DE ZONA",["SPAWN ZONE"]="ZONA DE APARICIÓN",["TP ZONE TO ME"]="TELEPORTAR ZONA A MÍ",["RESIZE BOX"]="REDIMENSIONAR CAJA",["SAVE AREA"]="GUARDAR ÁREA",["CLEAR BOX"]="LIMPIAR CAJA",["INSTANT SAVE ALL"]="GUARDADO INSTANTÁNEO",["Disable invisible blocks"]="Desactivar bloques invisibles",["Dont Build InvBlocks"]="No construir bloques invisibles",["Save Players?"]="¿Guardar jugadores?",["Save NPCs?"]="¿Guardar NPCs?",["Save InvLights?"]="¿Guardar InvLights?",["Load InvLights?"]="¿Cargar InvLights?",["Skip Duplicates"]="Omitir duplicados",["Auto-clear preview"]="Limpiar vista previa automáticamente",["Show warnings"]="Mostrar advertencias",["Preview transparency"]="Transparencia de vista previa",["Search timeout (s)"]="Tiempo de búsqueda (s)",["Build speed (s)"]="Velocidad de construcción (s)",["Language"]="Idioma",["CLOSE"]="CERRAR",["Reset settings"]="Restablecer ajustes",["Reset Warning"]="Reiniciar advertencia",["CREDITS AND LINKS"]="CRÉDITOS Y ENLACES",["ON"]="ACTIVADO",["OFF"]="DESACTIVADO",["hide"]="ocultar",["show"]="mostrar",["Spawn zone first!"]="¡Primero crea la zona!",["Resize Active"]="Redimensionando",["Preview Loaded"]="Vista previa cargada",["File not found"]="Archivo no encontrado",["Error: No preview active"]="Error: No hay vista previa activa",["Error: Remotes not found"]="Error: No se encontraron los remotes",["No data to upload"]="No hay datos para subir",["Upload Cancelled by user"]="Subida cancelada por el usuario",["Upload Finished"]="Subida finalizada",["Saved: "]="Guardado: ",["parts (size: "]="partes (tamaño: ",["KB)"]="KB)",["Error saving file. Try again."]="Error al guardar. Intenta de nuevo.",["Blocks: "]="Bloques: ",[" (fails: "]=" (fallos: ",["Settings reset"]="Ajustes restablecidos",["Skipped invisible blocks"]="Bloques invisibles omitidos",["Resize handles hidden"]="Controles de redimensionamiento ocultos",["Resize handles shown"]="Controles de redimensionamiento mostrados",["Blocks in file:"]="Bloques en archivo:",["Instant Save Complete"]="Guardado instantáneo completo",["Size: "]="Tamaño: ",
     },
     Portuguese = {
-        ["AUTOBUILD"]="AUTOCONSTRUIR",["SELECT MAP"]="SELECIONAR MAPA",["PREVIEW LOCAL"]="PRÉ-VISUALIZAÇÃO LOCAL",["UPLOAD SERVER"]="ENVIAR PARA SERVIDOR",["CLEAR"]="LIMPAR",["MOVE"]="MOVER",["ROTATE"]="GIRAR",["Status: Idle"]="Status: Inativo",["Move Snap"]="Ajuste de movimento",["Angle Snap (deg)"]="Ajuste de ângulo (graus)",["SETTINGS"]="CONFIGURAÇÕES",["FILE MANAGER"]="GERENCIADOR DE ARQUIVOS",["SAVE MAP"]="SALVAR MAPA",["CANCEL"]="CANCELAR",["FORMAT: NEW VERSION"]="FORMATO: NOVA VERSÃO",["FORMAT: OLD VERSION"]="FORMATO: VERSÃO ANTIGA",["ZONE EDITOR"]="EDITOR DE ZONA",["SPAWN ZONE"]="ZONA DE SPAWN",["TP ZONE TO ME"]="TELEPORTAR ZONA PARA MIM",["RESIZE BOX"]="REDIMENSIONAR CAIXA",["SAVE AREA"]="SALVAR ÁREA",["CLEAR BOX"]="LIMPAR CAIXA",["INSTANT SAVE ALL"]="SALVAR TUDO INSTANTÂNEO",["Disable invisible blocks"]="Desativar blocos invisíveis",["Dont Build InvBlocks"]="Não construir blocos invisíveis",["Save Players?"]="Salvar jogadores?",["Save NPCs?"]="Salvar NPCs?",["Save InvLights?"]="Salvar InvLights?",["Load InvLights?"]="Carregar InvLights?",["Skip Duplicates"]="Pular duplicados",["Auto-clear preview"]="Limpar pré-visualização automaticamente",["Show warnings"]="Mostrar avisos",["Preview transparency"]="Transparência da pré-visualização",["Search timeout (s)"]="Tempo de busca (s)",["Build speed (s)"]="Velocidade de construção (s)",["Language"]="Idioma",["CLOSE"]="FECHAR",["Reset settings"]="Restaurar configurações",["CREDITS AND LINKS"]="CRÉDITOS E LINKS",["ON"]="LIGADO",["OFF"]="DESLIGADO",["hide"]="ocultar",["show"]="mostrar",["Spawn zone first!"]="Crie a zona primeiro!",["Resize Active"]="Redimensionando",["Preview Loaded"]="Pré-visualização carregada",["File not found"]="Arquivo não encontrado",["Error: No preview active"]="Erro: Nenhuma pré-visualização ativa",["Error: Remotes not found"]="Erro: Remotes não encontrados",["No data to upload"]="Sem dados para enviar",["Upload Cancelled by user"]="Envio cancelado pelo usuário",["Upload Finished"]="Envio finalizado",["Saved: "]="Salvo: ",["parts (size: "]="partes (tamanho: ",["KB)"]="KB)",["Error saving file. Try again."]="Erro ao salvar. Tente novamente.",["Blocks: "]="Blocos: ",[" (fails: "]=" (falhas: ",["Settings reset"]="Configurações restauradas",["Skipped invisible blocks"]="Blocos invisíveis ignorados",["Resize handles hidden"]="Controles de redimensionamento ocultos",["Resize handles shown"]="Controles de redimensionamento mostrados",["Blocks in file:"]="Blocos no arquivo:",["Instant Save Complete"]="Salvamento instantâneo completo",["Size: "]="Tamanho: ",
+        ["AUTOBUILD"]="AUTOCONSTRUIR",["SELECT MAP"]="SELECIONAR MAPA",["PREVIEW LOCAL"]="PRÉ-VISUALIZAÇÃO LOCAL",["UPLOAD SERVER"]="ENVIAR PARA SERVIDOR",["CLEAR"]="LIMPAR",["MOVE"]="MOVER",["ROTATE"]="GIRAR",["Status: Idle"]="Status: Inativo",["Move Snap"]="Ajuste de movimento",["Angle Snap (deg)"]="Ajuste de ângulo (graus)",["SETTINGS"]="CONFIGURAÇÕES",["FILE MANAGER"]="GERENCIADOR DE ARQUIVOS",["SAVE MAP"]="SALVAR MAPA",["CANCEL"]="CANCELAR",["FORMAT: NEW VERSION"]="FORMATO: NOVA VERSÃO",["FORMAT: OLD VERSION"]="FORMATO: VERSÃO ANTIGA",["ZONE EDITOR"]="EDITOR DE ZONA",["SPAWN ZONE"]="ZONA DE SPAWN",["TP ZONE TO ME"]="TELEPORTAR ZONA PARA MIM",["RESIZE BOX"]="REDIMENSIONAR CAIXA",["SAVE AREA"]="SALVAR ÁREA",["CLEAR BOX"]="LIMPAR CAIXA",["INSTANT SAVE ALL"]="SALVAR TUDO INSTANTÂNEO",["Disable invisible blocks"]="Desativar blocos invisíveis",["Dont Build InvBlocks"]="Não construir blocos invisíveis",["Save Players?"]="Salvar jogadores?",["Save NPCs?"]="Salvar NPCs?",["Save InvLights?"]="Salvar InvLights?",["Load InvLights?"]="Carregar InvLights?",["Skip Duplicates"]="Pular duplicados",["Auto-clear preview"]="Limpar pré-visualização automaticamente",["Show warnings"]="Mostrar avisos",["Preview transparency"]="Transparência da pré-visualização",["Search timeout (s)"]="Tempo de busca (s)",["Build speed (s)"]="Velocidade de construção (s)",["Language"]="Idioma",["CLOSE"]="FECHAR",["Reset settings"]="Restaurar configurações",["Reset Warning"]="Reiniciar aviso",["CREDITS AND LINKS"]="CRÉDITOS E LINKS",["ON"]="LIGADO",["OFF"]="DESLIGADO",["hide"]="ocultar",["show"]="mostrar",["Spawn zone first!"]="Crie a zona primeiro!",["Resize Active"]="Redimensionando",["Preview Loaded"]="Pré-visualização carregada",["File not found"]="Arquivo não encontrado",["Error: No preview active"]="Erro: Nenhuma pré-visualização ativa",["Error: Remotes not found"]="Erro: Remotes não encontrados",["No data to upload"]="Sem dados para enviar",["Upload Cancelled by user"]="Envio cancelado pelo usuário",["Upload Finished"]="Envio finalizado",["Saved: "]="Salvo: ",["parts (size: "]="partes (tamanho: ",["KB)"]="KB)",["Error saving file. Try again."]="Erro ao salvar. Tente novamente.",["Blocks: "]="Blocos: ",[" (fails: "]=" (falhas: ",["Settings reset"]="Configurações restauradas",["Skipped invisible blocks"]="Blocos invisíveis ignorados",["Resize handles hidden"]="Controles de redimensionamento ocultos",["Resize handles shown"]="Controles de redimensionamento mostrados",["Blocks in file:"]="Blocos no arquivo:",["Instant Save Complete"]="Salvamento instantâneo completo",["Size: "]="Tamanho: ",
     }
 }
 
 local currentLanguage = "English"
 local function translate(key) return LANG[currentLanguage][key] or key end
 
+-- ================= FIRST-TIME WARNING PANEL =================
+local warningTranslations = {
+    English = {
+        title = "⚠️ IMPORTANT WARNING",
+        body = "This script was made EXCLUSIVELY to export maps from other Roblox games into the Piggy Build Mode created by MiniToon.\n\n✅ It ONLY works inside: Piggy Build Mode (MiniToon's game).\n❌ It does NOT work in: any other game, experience, or place.\n\nIf you run this script in a different game, it will not function correctly and may produce errors, corrupt your build, or simply do nothing at all. Always confirm that you are inside Piggy Build Mode before using any of the tools (AutoBuild, Zone Editor, File Manager, etc.).\n\nThe script also relies on the game's own remotes and blocks (PlaceBlock, CommitResize, CommitMove, etc.). If those don't exist in the current game, the upload feature will fail silently.\n\nPress the \"Translate\" button to switch between English, Spanish, and Portuguese. This message will only appear ONE time. Once you press \"I Understand\", it will never be shown again.",
+        translate = "Translate",
+        accept = "I Understand"
+    },
+    Spanish = {
+        title = "⚠️ ADVERTENCIA IMPORTANTE",
+        body = "Este script fue creado ÚNICAMENTE para exportar mapas desde otros juegos de Roblox hacia el Piggy Build Mode creado por MiniToon.\n\n✅ SOLO funciona dentro de: Piggy Build Mode (el juego de MiniToon).\n❌ NO funciona en: cualquier otro juego, experiencia o lugar.\n\nSi ejecutas este script en un juego diferente, no funcionará correctamente y puede generar errores, corromper tu construcción o simplemente no hacer nada. Asegúrate siempre de estar dentro de Piggy Build Mode antes de usar cualquiera de las herramientas (AutoBuild, Zone Editor, File Manager, etc.).\n\nEl script también depende de los remotes y bloques propios del juego (PlaceBlock, CommitResize, CommitMove, etc.). Si esos no existen en el juego actual, la función de subida fallará sin avisar.\n\nPresiona el botón \"Traducir\" para cambiar entre inglés, español y portugués. Este mensaje solo aparecerá UNA vez. Cuando presiones \"Entendido\", no se volverá a mostrar.",
+        translate = "Traducir",
+        accept = "Entendido"
+    },
+    Portuguese = {
+        title = "⚠️ AVISO IMPORTANTE",
+        body = "Este script foi criado EXCLUSIVAMENTE para exportar mapas de outros jogos do Roblox para o Piggy Build Mode criado pelo MiniToon.\n\n✅ SÓ funciona dentro de: Piggy Build Mode (o jogo do MiniToon).\n❌ NÃO funciona em: qualquer outro jogo, experiência ou lugar.\n\nSe você executar este script em um jogo diferente, ele não funcionará corretamente e poderá gerar erros, corromper sua construção ou simplesmente não fazer nada. Sempre confirme que você está dentro do Piggy Build Mode antes de usar qualquer ferramenta (AutoBuild, Zone Editor, File Manager, etc.).\n\nO script também depende dos remotes e blocos do próprio jogo (PlaceBlock, CommitResize, CommitMove, etc.). Se eles não existirem no jogo atual, o recurso de upload falhará silenciosamente.\n\nPressione o botão \"Traduzir\" para alternar entre inglês, espanhol e português. Esta mensagem aparecerá apenas UMA vez. Quando você pressionar \"Entendi\", ela não será mais exibida.",
+        translate = "Traduzir",
+        accept = "Entendi"
+    }
+}
+
+local ackFile = folderPath .. "warning_ack_v2.txt"
+local alreadyAcked = false
+if isfile and readfile then
+    pcall(function()
+        if isfile(ackFile) and readfile(ackFile) == "true" then
+            alreadyAcked = true
+        end
+    end)
+end
+
+if not alreadyAcked then
+    local WarningGUI = Instance.new("ScreenGui")
+    WarningGUI.Name = "WarningGUI"
+    WarningGUI.ResetOnSpawn = false
+    WarningGUI.Parent = lp:WaitForChild("PlayerGui")
+    WarningGUI.DisplayOrder = 999
+    
+    local WFrame = Instance.new("Frame")
+    WFrame.Size = UDim2.new(0, 460, 0, 360)
+    WFrame.Position = UDim2.new(0.5, -230, 0.5, -180)
+    WFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 40)
+    WFrame.BorderSizePixel = 0
+    WFrame.Parent = WarningGUI
+    Instance.new("UICorner", WFrame).CornerRadius = UDim.new(0, 12)
+    
+    local WTitle = Instance.new("TextLabel")
+    WTitle.Size = UDim2.new(1, 0, 0, 40)
+    WTitle.BackgroundTransparency = 1
+    WTitle.Text = warningTranslations[currentLanguage].title
+    WTitle.TextColor3 = Color3.fromRGB(255, 70, 70)
+    WTitle.Font = Enum.Font.GothamBold
+    WTitle.TextSize = 18
+    WTitle.Parent = WFrame
+    
+    local WText = Instance.new("TextLabel")
+    WText.Size = UDim2.new(1, -20, 1, -110)
+    WText.Position = UDim2.new(0, 10, 0, 40)
+    WText.BackgroundTransparency = 1
+    WText.Text = warningTranslations[currentLanguage].body
+    WText.TextColor3 = Color3.new(1,1,1)
+    WText.Font = Enum.Font.Gotham
+    WText.TextSize = 13
+    WText.TextWrapped = true
+    WText.TextYAlignment = Enum.TextYAlignment.Top
+    WText.Parent = WFrame
+    
+    local WTranslateBtn = Instance.new("TextButton")
+    WTranslateBtn.Size = UDim2.new(0.45, 0, 0, 35)
+    WTranslateBtn.Position = UDim2.new(0.03, 0, 1, -45)
+    WTranslateBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    WTranslateBtn.TextColor3 = Color3.new(1,1,1)
+    WTranslateBtn.Font = Enum.Font.GothamBold
+    WTranslateBtn.TextSize = 13
+    WTranslateBtn.Text = warningTranslations[currentLanguage].translate
+    WTranslateBtn.Parent = WFrame
+    Instance.new("UICorner", WTranslateBtn).CornerRadius = UDim.new(0, 6)
+    
+    local WAcceptBtn = Instance.new("TextButton")
+    WAcceptBtn.Size = UDim2.new(0.45, 0, 0, 35)
+    WAcceptBtn.Position = UDim2.new(0.52, 0, 1, -45)
+    WAcceptBtn.BackgroundColor3 = Color3.fromRGB(0, 230, 118)
+    WAcceptBtn.TextColor3 = Color3.new(1,1,1)
+    WAcceptBtn.Font = Enum.Font.GothamBold
+    WAcceptBtn.TextSize = 13
+    WAcceptBtn.Text = warningTranslations[currentLanguage].accept
+    WAcceptBtn.Parent = WFrame
+    Instance.new("UICorner", WAcceptBtn).CornerRadius = UDim.new(0, 6)
+    
+    WTranslateBtn.MouseButton1Click:Connect(function()
+        local langOrder = {"English","Spanish","Portuguese"}
+        local idx = table.find(langOrder, currentLanguage)
+        idx = idx and (idx % #langOrder) + 1 or 1
+        currentLanguage = langOrder[idx]
+        
+        WTitle.Text = warningTranslations[currentLanguage].title
+        WText.Text = warningTranslations[currentLanguage].body
+        WTranslateBtn.Text = warningTranslations[currentLanguage].translate
+        WAcceptBtn.Text = warningTranslations[currentLanguage].accept
+    end)
+    
+    WAcceptBtn.MouseButton1Click:Connect(function()
+        pcall(function() writefile(ackFile, "true") end)
+        WarningGUI:Destroy()
+    end)
+end
+
+-- ================= MAIN UI =================
 local ScreenGui = Instance.new("ScreenGui", lp.PlayerGui)
 ScreenGui.Name = "RMS"
 ScreenGui.ResetOnSpawn = false
@@ -281,139 +390,6 @@ local function createPanel(nameKey, size, pos)
     return Main, Content
 end
 
--- ============================================================
--- PANEL DE ADVERTENCIA (se ejecuta antes de todo, solo 1 vez)
--- ============================================================
-local warnTranslations = {
-    English = {
-        title = "⚠️ IMPORTANT WARNING — READ BEFORE USE",
-        body = "This script was made EXCLUSIVELY to export maps from other Roblox games into the Piggy Build Mode created by MiniToon.\n\n✅ It ONLY works inside: Piggy Build Mode (MiniToon's game).\n❌ It does NOT work in: any other game, experience, or place.\n\nIf you run this script in a different game, it will not function correctly and may produce errors, corrupt your build, or simply do nothing at all. Always confirm that you are inside Piggy Build Mode before using any of the tools (AutoBuild, Zone Editor, File Manager, etc.).\n\nThe script also relies on the game's own remotes and blocks (PlaceBlock, CommitResize, CommitMove, etc.). If those don't exist in the current game, the upload feature will fail silently.\n\nPress the \"Translate\" button to switch between English, Spanish, and Portuguese. This message will only appear ONE time. Once you press \"I Understand\", it will never be shown again.",
-        translate = "Translate",
-        accept = "I Understand"
-    },
-    Spanish = {
-        title = "⚠️ ADVERTENCIA IMPORTANTE — LEER ANTES DE USAR",
-        body = "Este script fue creado ÚNICAMENTE para exportar mapas desde otros juegos de Roblox hacia el Piggy Build Mode creado por MiniToon.\n\n✅ SOLO funciona dentro de: Piggy Build Mode (el juego de MiniToon).\n❌ NO funciona en: cualquier otro juego, experiencia o lugar.\n\nSi ejecutas este script en un juego diferente, no funcionará correctamente y puede generar errores, corromper tu construcción o simplemente no hacer nada. Asegúrate siempre de estar dentro de Piggy Build Mode antes de usar cualquiera de las herramientas (AutoBuild, Zone Editor, File Manager, etc.).\n\nEl script también depende de los remotes y bloques propios del juego (PlaceBlock, CommitResize, CommitMove, etc.). Si esos no existen en el juego actual, la función de subida fallará sin avisar.\n\nPresiona el botón \"Traducir\" para cambiar entre inglés, español y portugués. Este mensaje solo aparecerá UNA vez. Cuando presiones \"Entendido\", no se volverá a mostrar.",
-        translate = "Traducir",
-        accept = "Entendido"
-    },
-    Portuguese = {
-        title = "⚠️ AVISO IMPORTANTE — LEIA ANTES DE USAR",
-        body = "Este script foi criado EXCLUSIVAMENTE para exportar mapas de outros jogos do Roblox para o Piggy Build Mode criado pelo MiniToon.\n\n✅ SÓ funciona dentro de: Piggy Build Mode (o jogo do MiniToon).\n❌ NÃO funciona em: qualquer outro jogo, experiência ou lugar.\n\nSe você executar este script em um jogo diferente, ele não funcionará corretamente e poderá gerar erros, corromper sua construção ou simplesmente não fazer nada. Sempre confirme que você está dentro do Piggy Build Mode antes de usar qualquer ferramenta (AutoBuild, Zone Editor, File Manager, etc.).\n\nO script também depende dos remotes e blocos do próprio jogo (PlaceBlock, CommitResize, CommitMove, etc.). Se eles não existirem no jogo atual, o recurso de upload falhará silenciosamente.\n\nPressione o botão \"Traduzir\" para alternar entre inglês, espanhol e português. Esta mensagem aparecerá apenas UMA vez. Quando você pressionar \"Entendi\", ela não será mais exibida.",
-        translate = "Traduzir",
-        accept = "Entendi"
-    }
-}
-
-local warnFile = folderPath .. "warning_seen.txt"
-local alreadyWarned = false
-if isfile then pcall(function() alreadyWarned = isfile(warnFile) end) end
-
-if not alreadyWarned then
-    local WarnPanel, WarnContent = createPanel("⚠️ WARNING", UDim2.fromOffset(460, 380), UDim2.new(0.5, -230, 0.5, -190))
-    WarnPanel.Name = "WarningPanel"
-    WarnPanel.ZIndex = 1000
-
-    local warnHeader = WarnPanel:FindFirstChildOfClass("Frame")
-    if warnHeader then
-        local warnTitle = warnHeader:FindFirstChildOfClass("TextLabel")
-        if warnTitle then warnTitle.Text = ""; warnTitle:SetAttribute("TranslationKey", nil) end
-        local warnMin = warnHeader:FindFirstChildOfClass("TextButton")
-        if warnMin then warnMin.Visible = false end
-        warnHeader.ZIndex = 1001
-    end
-
-    local warnLangOrder = {"English", "Spanish", "Portuguese"}
-    local warnCurrentLang = "English"
-
-    local warnTitleLbl = Instance.new("TextLabel", WarnContent)
-    warnTitleLbl.Size = UDim2.new(1, 0, 0, 30)
-    warnTitleLbl.Position = UDim2.fromOffset(0, 0)
-    warnTitleLbl.BackgroundTransparency = 1
-    warnTitleLbl.Text = warnTranslations[warnCurrentLang].title
-    warnTitleLbl.TextColor3 = Color3.fromRGB(255, 70, 70)
-    warnTitleLbl.Font = Enum.Font.GothamBold
-    warnTitleLbl.TextSize = 15
-    warnTitleLbl.TextXAlignment = Enum.TextXAlignment.Left
-    warnTitleLbl.ZIndex = 1002
-
-    local warnScroll = Instance.new("ScrollingFrame", WarnContent)
-    warnScroll.Size = UDim2.new(1, 0, 1, -130)
-    warnScroll.Position = UDim2.fromOffset(0, 36)
-    warnScroll.BackgroundColor3 = Colors.Dark
-    warnScroll.BackgroundTransparency = 0.35
-    warnScroll.BorderSizePixel = 0
-    warnScroll.ScrollBarThickness = 4
-    warnScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-    warnScroll.ZIndex = 1002
-    Instance.new("UICorner", warnScroll).CornerRadius = UDim.new(0, 6)
-
-    local warnBodyLbl = Instance.new("TextLabel", warnScroll)
-    warnBodyLbl.Size = UDim2.new(1, -14, 0, 0)
-    warnBodyLbl.Position = UDim2.fromOffset(7, 7)
-    warnBodyLbl.BackgroundTransparency = 1
-    warnBodyLbl.Text = warnTranslations[warnCurrentLang].body
-    warnBodyLbl.TextColor3 = Color3.new(1, 1, 1)
-    warnBodyLbl.Font = Enum.Font.Gotham
-    warnBodyLbl.TextSize = 12
-    warnBodyLbl.TextWrapped = true
-    warnBodyLbl.TextXAlignment = Enum.TextXAlignment.Left
-    warnBodyLbl.TextYAlignment = Enum.TextYAlignment.Top
-    warnBodyLbl.AutomaticSize = Enum.AutomaticSize.Y
-    warnBodyLbl.ZIndex = 1003
-
-    warnBodyLbl:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-        warnScroll.CanvasSize = UDim2.new(0, 0, 0, warnBodyLbl.AbsoluteSize.Y + 14)
-    end)
-
-    local warnTranslateBtn = Instance.new("TextButton", WarnContent)
-    warnTranslateBtn.Size = UDim2.new(0.48, 0, 0, 38)
-    warnTranslateBtn.Position = UDim2.new(0, 0, 1, -46)
-    warnTranslateBtn.Text = warnTranslations[warnCurrentLang].translate
-    warnTranslateBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 200)
-    warnTranslateBtn.TextColor3 = Color3.new(1, 1, 1)
-    warnTranslateBtn.Font = Enum.Font.GothamBold
-    warnTranslateBtn.TextSize = 13
-    warnTranslateBtn.ZIndex = 1005
-    Instance.new("UICorner", warnTranslateBtn).CornerRadius = UDim.new(0, 8)
-
-    local warnAcceptBtn = Instance.new("TextButton", WarnContent)
-    warnAcceptBtn.Size = UDim2.new(0.48, 0, 0, 38)
-    warnAcceptBtn.Position = UDim2.new(0.52, 0, 1, -46)
-    warnAcceptBtn.Text = warnTranslations[warnCurrentLang].accept
-    warnAcceptBtn.BackgroundColor3 = Colors.Success
-    warnAcceptBtn.TextColor3 = Color3.new(1, 1, 1)
-    warnAcceptBtn.Font = Enum.Font.GothamBold
-    warnAcceptBtn.TextSize = 13
-    warnAcceptBtn.ZIndex = 1005
-    Instance.new("UICorner", warnAcceptBtn).CornerRadius = UDim.new(0, 8)
-
-    local function refreshWarnTexts()
-        local t = warnTranslations[warnCurrentLang]
-        warnTitleLbl.Text = t.title
-        warnBodyLbl.Text = t.body
-        warnTranslateBtn.Text = t.translate
-        warnAcceptBtn.Text = t.accept
-    end
-
-    warnTranslateBtn.MouseButton1Click:Connect(function()
-        local idx = table.find(warnLangOrder, warnCurrentLang) or 1
-        warnCurrentLang = warnLangOrder[(idx % #warnLangOrder) + 1]
-        refreshWarnTexts()
-        warnScroll.CanvasPosition = Vector2.new(0, 0)
-    end)
-
-    warnAcceptBtn.MouseButton1Click:Connect(function()
-        if writefile then pcall(function() writefile(warnFile, "acknowledged") end) end
-        WarnPanel:Destroy()
-    end)
-
-    refreshWarnTexts()
-end
--- ============================================================
--- FIN DEL PANEL DE ADVERTENCIA
--- ============================================================
-
 local PanelExplorer, ExpContent = createPanel("FILE MANAGER", UDim2.fromOffset(300, 420), UDim2.new(0.5, -150, 0.5, -210))
 PanelExplorer.Visible = false; PanelExplorer.ZIndex = 100
 
@@ -522,7 +498,7 @@ local settings = {
     saveInvLights = true, loadInvLights = true, skipDuplicates = false,
 }
 
-local PanelSettings, SetContent = createPanel("SETTINGS", UDim2.fromOffset(300, 520), UDim2.new(0.5, -150, 0.5, -260))
+local PanelSettings, SetContent = createPanel("SETTINGS", UDim2.fromOffset(300, 550), UDim2.new(0.5, -150, 0.5, -275))
 PanelSettings.Parent = ScreenGui; PanelSettings.Visible = false
 local toggleButtons = {}
 
@@ -577,6 +553,21 @@ end)
 local closeSetBtn = Instance.new("TextButton", SetContent); closeSetBtn.Size = UDim2.new(0.48, 0, 0, 32); closeSetBtn.Position = UDim2.new(0.52, 0, 0, yOff); closeSetBtn.Text = translate("CLOSE"); closeSetBtn:SetAttribute("TranslationKey", "CLOSE"); closeSetBtn.BackgroundColor3 = Colors.Secondary; closeSetBtn.TextColor3 = Color3.new(1,1,1); closeSetBtn.Font = Enum.Font.GothamBold; closeSetBtn.TextSize = 12
 Instance.new("UICorner", closeSetBtn).CornerRadius = UDim.new(0, 6)
 closeSetBtn.MouseButton1Click:Connect(function() PanelSettings.Visible = false end)
+
+yOff = yOff + 32
+local resetWarnBtn = Instance.new("TextButton", SetContent); resetWarnBtn.Size = UDim2.new(1, 0, 0, 32); resetWarnBtn.Position = UDim2.new(0, 0, 0, yOff); resetWarnBtn.Text = translate("Reset Warning"); resetWarnBtn:SetAttribute("TranslationKey", "Reset Warning"); resetWarnBtn.BackgroundColor3 = Color3.fromRGB(200, 60, 60); resetWarnBtn.TextColor3 = Color3.new(1,1,1); resetWarnBtn.Font = Enum.Font.GothamBold; resetWarnBtn.TextSize = 12
+Instance.new("UICorner", resetWarnBtn).CornerRadius = UDim.new(0, 6)
+resetWarnBtn.MouseButton1Click:Connect(function()
+    local deleted = false
+    if delfile then
+        local ok = pcall(function() delfile(ackFile) end)
+        deleted = ok
+    end
+    if not deleted and writefile then
+        pcall(function() writefile(ackFile, "") end)
+    end
+    showNotification("Warning reset. Reload the script to see the panel again.", 4, Colors.Success)
+end)
 
 local PanelBuild, BuildContent = createPanel("AUTOBUILD", UDim2.fromOffset(300, 400), UDim2.new(0.5, -260, 0.5, -320))
 PanelBuild.Parent = ScreenGui
