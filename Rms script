@@ -281,6 +281,139 @@ local function createPanel(nameKey, size, pos)
     return Main, Content
 end
 
+-- ============================================================
+-- PANEL DE ADVERTENCIA (se ejecuta antes de todo, solo 1 vez)
+-- ============================================================
+local warnTranslations = {
+    English = {
+        title = "⚠️ IMPORTANT WARNING — READ BEFORE USE",
+        body = "This script was made EXCLUSIVELY to export maps from other Roblox games into the Piggy Build Mode created by MiniToon.\n\n✅ It ONLY works inside: Piggy Build Mode (MiniToon's game).\n❌ It does NOT work in: any other game, experience, or place.\n\nIf you run this script in a different game, it will not function correctly and may produce errors, corrupt your build, or simply do nothing at all. Always confirm that you are inside Piggy Build Mode before using any of the tools (AutoBuild, Zone Editor, File Manager, etc.).\n\nThe script also relies on the game's own remotes and blocks (PlaceBlock, CommitResize, CommitMove, etc.). If those don't exist in the current game, the upload feature will fail silently.\n\nPress the \"Translate\" button to switch between English, Spanish, and Portuguese. This message will only appear ONE time. Once you press \"I Understand\", it will never be shown again.",
+        translate = "Translate",
+        accept = "I Understand"
+    },
+    Spanish = {
+        title = "⚠️ ADVERTENCIA IMPORTANTE — LEER ANTES DE USAR",
+        body = "Este script fue creado ÚNICAMENTE para exportar mapas desde otros juegos de Roblox hacia el Piggy Build Mode creado por MiniToon.\n\n✅ SOLO funciona dentro de: Piggy Build Mode (el juego de MiniToon).\n❌ NO funciona en: cualquier otro juego, experiencia o lugar.\n\nSi ejecutas este script en un juego diferente, no funcionará correctamente y puede generar errores, corromper tu construcción o simplemente no hacer nada. Asegúrate siempre de estar dentro de Piggy Build Mode antes de usar cualquiera de las herramientas (AutoBuild, Zone Editor, File Manager, etc.).\n\nEl script también depende de los remotes y bloques propios del juego (PlaceBlock, CommitResize, CommitMove, etc.). Si esos no existen en el juego actual, la función de subida fallará sin avisar.\n\nPresiona el botón \"Traducir\" para cambiar entre inglés, español y portugués. Este mensaje solo aparecerá UNA vez. Cuando presiones \"Entendido\", no se volverá a mostrar.",
+        translate = "Traducir",
+        accept = "Entendido"
+    },
+    Portuguese = {
+        title = "⚠️ AVISO IMPORTANTE — LEIA ANTES DE USAR",
+        body = "Este script foi criado EXCLUSIVAMENTE para exportar mapas de outros jogos do Roblox para o Piggy Build Mode criado pelo MiniToon.\n\n✅ SÓ funciona dentro de: Piggy Build Mode (o jogo do MiniToon).\n❌ NÃO funciona em: qualquer outro jogo, experiência ou lugar.\n\nSe você executar este script em um jogo diferente, ele não funcionará corretamente e poderá gerar erros, corromper sua construção ou simplesmente não fazer nada. Sempre confirme que você está dentro do Piggy Build Mode antes de usar qualquer ferramenta (AutoBuild, Zone Editor, File Manager, etc.).\n\nO script também depende dos remotes e blocos do próprio jogo (PlaceBlock, CommitResize, CommitMove, etc.). Se eles não existirem no jogo atual, o recurso de upload falhará silenciosamente.\n\nPressione o botão \"Traduzir\" para alternar entre inglês, espanhol e português. Esta mensagem aparecerá apenas UMA vez. Quando você pressionar \"Entendi\", ela não será mais exibida.",
+        translate = "Traduzir",
+        accept = "Entendi"
+    }
+}
+
+local warnFile = folderPath .. "warning_seen.txt"
+local alreadyWarned = false
+if isfile then pcall(function() alreadyWarned = isfile(warnFile) end) end
+
+if not alreadyWarned then
+    local WarnPanel, WarnContent = createPanel("⚠️ WARNING", UDim2.fromOffset(460, 380), UDim2.new(0.5, -230, 0.5, -190))
+    WarnPanel.Name = "WarningPanel"
+    WarnPanel.ZIndex = 1000
+
+    local warnHeader = WarnPanel:FindFirstChildOfClass("Frame")
+    if warnHeader then
+        local warnTitle = warnHeader:FindFirstChildOfClass("TextLabel")
+        if warnTitle then warnTitle.Text = ""; warnTitle:SetAttribute("TranslationKey", nil) end
+        local warnMin = warnHeader:FindFirstChildOfClass("TextButton")
+        if warnMin then warnMin.Visible = false end
+        warnHeader.ZIndex = 1001
+    end
+
+    local warnLangOrder = {"English", "Spanish", "Portuguese"}
+    local warnCurrentLang = "English"
+
+    local warnTitleLbl = Instance.new("TextLabel", WarnContent)
+    warnTitleLbl.Size = UDim2.new(1, 0, 0, 30)
+    warnTitleLbl.Position = UDim2.fromOffset(0, 0)
+    warnTitleLbl.BackgroundTransparency = 1
+    warnTitleLbl.Text = warnTranslations[warnCurrentLang].title
+    warnTitleLbl.TextColor3 = Color3.fromRGB(255, 70, 70)
+    warnTitleLbl.Font = Enum.Font.GothamBold
+    warnTitleLbl.TextSize = 15
+    warnTitleLbl.TextXAlignment = Enum.TextXAlignment.Left
+    warnTitleLbl.ZIndex = 1002
+
+    local warnScroll = Instance.new("ScrollingFrame", WarnContent)
+    warnScroll.Size = UDim2.new(1, 0, 1, -130)
+    warnScroll.Position = UDim2.fromOffset(0, 36)
+    warnScroll.BackgroundColor3 = Colors.Dark
+    warnScroll.BackgroundTransparency = 0.35
+    warnScroll.BorderSizePixel = 0
+    warnScroll.ScrollBarThickness = 4
+    warnScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    warnScroll.ZIndex = 1002
+    Instance.new("UICorner", warnScroll).CornerRadius = UDim.new(0, 6)
+
+    local warnBodyLbl = Instance.new("TextLabel", warnScroll)
+    warnBodyLbl.Size = UDim2.new(1, -14, 0, 0)
+    warnBodyLbl.Position = UDim2.fromOffset(7, 7)
+    warnBodyLbl.BackgroundTransparency = 1
+    warnBodyLbl.Text = warnTranslations[warnCurrentLang].body
+    warnBodyLbl.TextColor3 = Color3.new(1, 1, 1)
+    warnBodyLbl.Font = Enum.Font.Gotham
+    warnBodyLbl.TextSize = 12
+    warnBodyLbl.TextWrapped = true
+    warnBodyLbl.TextXAlignment = Enum.TextXAlignment.Left
+    warnBodyLbl.TextYAlignment = Enum.TextYAlignment.Top
+    warnBodyLbl.AutomaticSize = Enum.AutomaticSize.Y
+    warnBodyLbl.ZIndex = 1003
+
+    warnBodyLbl:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        warnScroll.CanvasSize = UDim2.new(0, 0, 0, warnBodyLbl.AbsoluteSize.Y + 14)
+    end)
+
+    local warnTranslateBtn = Instance.new("TextButton", WarnContent)
+    warnTranslateBtn.Size = UDim2.new(0.48, 0, 0, 38)
+    warnTranslateBtn.Position = UDim2.new(0, 0, 1, -46)
+    warnTranslateBtn.Text = warnTranslations[warnCurrentLang].translate
+    warnTranslateBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 200)
+    warnTranslateBtn.TextColor3 = Color3.new(1, 1, 1)
+    warnTranslateBtn.Font = Enum.Font.GothamBold
+    warnTranslateBtn.TextSize = 13
+    warnTranslateBtn.ZIndex = 1005
+    Instance.new("UICorner", warnTranslateBtn).CornerRadius = UDim.new(0, 8)
+
+    local warnAcceptBtn = Instance.new("TextButton", WarnContent)
+    warnAcceptBtn.Size = UDim2.new(0.48, 0, 0, 38)
+    warnAcceptBtn.Position = UDim2.new(0.52, 0, 1, -46)
+    warnAcceptBtn.Text = warnTranslations[warnCurrentLang].accept
+    warnAcceptBtn.BackgroundColor3 = Colors.Success
+    warnAcceptBtn.TextColor3 = Color3.new(1, 1, 1)
+    warnAcceptBtn.Font = Enum.Font.GothamBold
+    warnAcceptBtn.TextSize = 13
+    warnAcceptBtn.ZIndex = 1005
+    Instance.new("UICorner", warnAcceptBtn).CornerRadius = UDim.new(0, 8)
+
+    local function refreshWarnTexts()
+        local t = warnTranslations[warnCurrentLang]
+        warnTitleLbl.Text = t.title
+        warnBodyLbl.Text = t.body
+        warnTranslateBtn.Text = t.translate
+        warnAcceptBtn.Text = t.accept
+    end
+
+    warnTranslateBtn.MouseButton1Click:Connect(function()
+        local idx = table.find(warnLangOrder, warnCurrentLang) or 1
+        warnCurrentLang = warnLangOrder[(idx % #warnLangOrder) + 1]
+        refreshWarnTexts()
+        warnScroll.CanvasPosition = Vector2.new(0, 0)
+    end)
+
+    warnAcceptBtn.MouseButton1Click:Connect(function()
+        if writefile then pcall(function() writefile(warnFile, "acknowledged") end) end
+        WarnPanel:Destroy()
+    end)
+
+    refreshWarnTexts()
+end
+-- ============================================================
+-- FIN DEL PANEL DE ADVERTENCIA
+-- ============================================================
+
 local PanelExplorer, ExpContent = createPanel("FILE MANAGER", UDim2.fromOffset(300, 420), UDim2.new(0.5, -150, 0.5, -210))
 PanelExplorer.Visible = false; PanelExplorer.ZIndex = 100
 
